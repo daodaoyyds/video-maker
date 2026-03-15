@@ -165,8 +165,8 @@ export default function Step5EnhancedScript({ onNext, onPrev }: Step5Props) {
                       {shot.description}
                     </Paragraph>
                     <Space>
-                      <Tag size="small">{shot.camera}</Tag>
-                      <Tag size="small" color="blue">{shot.focus}</Tag>
+                      <Tag>{shot.camera}</Tag>
+                      <Tag color="blue">{shot.focus}</Tag>
                     </Space>
                   </div>
                 ),

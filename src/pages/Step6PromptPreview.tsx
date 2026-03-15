@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Card, Button, Space, Typography, Row, Col, Tag, Alert, Tabs, Tooltip, message } from 'antd'
+import { Card, Button, Space, Typography, Row, Col, Tag, Alert, Tooltip, message } from 'antd'
 import { ArrowLeftOutlined, ArrowRightOutlined, CopyOutlined, EditOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import { useProjectStore } from '../stores/projectStore'
 
@@ -8,16 +8,13 @@ interface Step6Props {
   onPrev: () => void
 }
 
-const { Title, Text, Paragraph } = Typography
-const { TabPane } = Tabs
+const { Text, Paragraph } = Typography
 
 export default function Step6PromptPreview({ onNext, onPrev }: Step6Props) {
   const { 
     productName, 
-    productImage, 
     videoDuration, 
     aspectRatio,
-    selectedScript,
     setStep6Data 
   } = useProjectStore()
   
@@ -170,7 +167,7 @@ export default function Step6PromptPreview({ onNext, onPrev }: Step6Props) {
               <Text strong>主色调：</Text>
               <br />
               {productAnalysis.mainColors.map((color, idx) => (
-                <Tag key={idx} size="small" style={{ marginTop: '4px' }}>{color}</Tag>
+                <Tag key={idx} style={{ marginTop: '4px' }}>{color}</Tag>
               ))}
             </Paragraph>
             <Paragraph>
@@ -181,7 +178,7 @@ export default function Step6PromptPreview({ onNext, onPrev }: Step6Props) {
               <Text strong>使用场景：</Text>
               <br />
               {productAnalysis.usageScenarios.map((scene, idx) => (
-                <Tag key={idx} color="blue" size="small" style={{ marginTop: '4px' }}>{scene}</Tag>
+                <Tag key={idx} color="blue" style={{ marginTop: '4px' }}>{scene}</Tag>
               ))}
             </Paragraph>
           </Card>

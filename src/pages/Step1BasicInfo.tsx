@@ -25,7 +25,7 @@ export default function Step1BasicInfo({ onNext }: Step1Props) {
   const [form] = Form.useForm()
   const { productName, productImage, videoDuration, aspectRatio, setStep1Data } = useProjectStore()
   const [imageUrl, setImageUrl] = useState<string | null>(productImage)
-  const [loading, setLoading] = useState(false)
+  const [, setLoading] = useState(false)
 
   const uploadProps: UploadProps = {
     name: 'file',

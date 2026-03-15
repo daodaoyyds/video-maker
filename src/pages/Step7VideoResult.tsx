@@ -18,30 +18,10 @@ export default function Step7VideoResult({ onPrev }: Step7Props) {
     finalPrompt 
   } = useProjectStore()
   
-  const [generating, setGenerating] = useState(false)
+  const [generating] = useState(false)
   const [progress, setProgress] = useState(0)
   const [videoUrl, setVideoUrl] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
-
-  const handleGenerate = async () => {
-    setGenerating(true)
-    setProgress(0)
-    setError(null)
-    
-    // 模拟生成进度
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval)
-          setGenerating(false)
-          // 模拟生成完成，显示占位视频
-          setVideoUrl('placeholder')
-          return 100
-        }
-        return prev + Math.random() * 15
-      })
-    }, 1000)
-  }
+  const [, setError] = useState<string | null>(null)
 
   const handleDownload = () => {
     // 实际项目中这里会下载真实视频

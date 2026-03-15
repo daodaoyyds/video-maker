@@ -7,7 +7,7 @@ interface Step4Props {
   onPrev: () => void
 }
 
-const { Title, Text, Paragraph } = Typography
+const { Text, Paragraph } = Typography
 
 export default function Step4ScriptDetail({ onNext, onPrev }: Step4Props) {
   const { selectedScript } = useProjectStore()

@@ -109,11 +109,39 @@ ${plotScale}
 
   // 解析脚本响应
   const parseScriptResponse = (response: string): ScriptProposal[] => {
-    const jsonMatch = response.match(/\{[\s\S]*\}/)
-    if (jsonMatch) {
-      const data = JSON.parse(jsonMatch[0])
-      return data.scripts || data.proposals || []
+    // 尝试匹配 JSON 数组
+    const arrayMatch = response.match(/\[[\s\S]*\]/)
+    if (arrayMatch) {
+      try {
+        const data = JSON.parse(arrayMatch[0])
+        if (Array.isArray(data)) {
+          return data.map((item: any, index: number) => ({
+            id: item.id || `script${index + 1}`,
+            title: item.title || item.script_title || '未命名脚本',
+            relationship: item.relationship || item.character_relationship || '未知',
+            characterSetting: item.characterSetting || item.character_setting || item.target_audience || '暂无',
+            summary: item.summary || item.creative_highlights || '暂无',
+            outline: item.outline || item.script_outline || '暂无',
+          }))
+        }
+      } catch (e) {
+        console.error('Array parse error:', e)
+      }
     }
+    
+    // 尝试匹配 JSON 对象
+    const objectMatch = response.match(/\{[\s\S]*\}/)
+    if (objectMatch) {
+      try {
+        const data = JSON.parse(objectMatch[0])
+        if (data.scripts || data.proposals) {
+          return data.scripts || data.proposals || []
+        }
+      } catch (e) {
+        console.error('Object parse error:', e)
+      }
+    }
+    
     throw new Error('No JSON found in response')
   }
 

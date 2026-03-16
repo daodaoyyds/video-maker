@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
-import { Card, Button, Space, Spin, message, Tag, Radio, Row, Col, Typography, Progress } from 'antd'
-import { ArrowLeftOutlined, ArrowRightOutlined, ReloadOutlined } from '@ant-design/icons'
+import { Card, Button, Space, Spin, message, Tag, Radio, Row, Col, Typography, Progress, Descriptions, Image, Divider } from 'antd'
+import { ArrowLeftOutlined, ArrowRightOutlined, ReloadOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import { useProjectStore } from '../stores/projectStore'
 import { callCozeAgent, generateSessionId, AGENT_CONFIGS } from '../api/coze'
 
@@ -81,13 +81,13 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
 2. 核心技术：产品采用的技术/成分
 3. 核心功效：产品的主要功效
 4. 解决痛点：产品解决的用户痛点
-5. 产品细节：
-   - 形态说明（外观描述）
-   - 尺寸比例
-   - 主色调
-   - 主要文字元素
-   - 材质质感
-   - 使用场景暗示
+5. 产品外观细节：
+   - 形态说明（外观描述，如：圆柱形瓶身、方形盒子等）
+   - 尺寸比例（如：高度10cm，直径3cm）
+   - 主色调（如：香槟金、玫瑰粉、纯白色）
+   - 主要文字元素（如：品牌名、产品名、容量标识）
+   - 材质质感（如：磨砂玻璃、亮面金属、哑光塑料）
+   - 使用场景暗示（如：便携小巧适合随身携带）
 
 请以JSON格式返回，便于程序解析。`
   }, [productName, productImage])
@@ -300,6 +300,270 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
     onNext()
   }
 
+  // 获取选中的TA信息
+  const selectedTAInfo = taProfiles.find(ta => ta.id === selectedTA)
+
   return (
     <div>
-      <h2 style={{ marginBottom: '24px', fontSize: '20px' }}>
+      <Title level={4} style={{ marginBottom: '24px' }}>
+        步骤 2：产品调研与TA画像分析
+      </Title>
+
+      {/* 开始调研按钮 */}
+      {!productInfo && !loading && (
+        <Card style={{ marginBottom: '24px', textAlign: 'center' }}>
+          <Space direction="vertical" size="large" style={{ width: '100%' }}>
+            <Text type="secondary">点击下方按钮开始产品调研</Text>
+            <Button type="primary" size="large" onClick={handleResearch}>
+              开始调研
+            </Button>
+          </Space>
+        </Card>
+      )}
+
+      {/* 加载状态 */}
+      {loading && (
+        <Card style={{ marginBottom: '24px', textAlign: 'center' }}>
+          <Space direction="vertical" size="large" style={{ width: '100%' }}>
+            <Spin size="large" />
+            <Progress percent={progress} status="active" />
+            <Text>{loadingText}</Text>
+          </Space>
+        </Card>
+      )}
+
+      {/* 产品信息展示 */}
+      {productInfo && !loading && (
+        <>
+          <Row gutter={[24, 24]}>
+            {/* 左侧：产品图片和基本信息 */}
+            <Col xs={24} lg={8}>
+              <Card title="产品信息" style={{ marginBottom: '24px' }}>
+                {productImage && (
+                  <Image
+                    src={productImage}
+                    alt={productName}
+                    style={{ width: '100%', marginBottom: '16px', borderRadius: '8px' }}
+                  />
+                )}
+                <Title level={5}>{productName}</Title>
+                <Divider />
+                <Descriptions column={1} size="small">
+                  <Descriptions.Item label="核心技术">
+                    {productInfo.coreTech || '暂无'}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="核心功效">
+                    {productInfo.coreBenefits || '暂无'}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="解决痛点">
+                    {productInfo.painPoints || '暂无'}
+                  </Descriptions.Item>
+                </Descriptions>
+              </Card>
+            </Col>
+
+            {/* 右侧：产品外观细节 */}
+            <Col xs={24} lg={16}>
+              <Card 
+                title="📦 产品外观细节" 
+                style={{ marginBottom: '24px' }}
+                extra={<Tag color="blue">AI分析</Tag>}
+              >
+                <Row gutter={[16, 16]}>
+                  <Col xs={24} sm={12}>
+                    <Card size="small" title="形态说明">
+                      <Text>{productInfo.formDescription || '暂无数据'}</Text>
+                    </Card>
+                  </Col>
+                  <Col xs={24} sm={12}>
+                    <Card size="small" title="尺寸比例">
+                      <Text>{productInfo.sizeRatio || '暂无数据'}</Text>
+                    </Card>
+                  </Col>
+                  <Col xs={24} sm={12}>
+                    <Card size="small" title="主色调">
+                      {productInfo.mainColors && productInfo.mainColors.length > 0 ? (
+                        <Space wrap>
+                          {productInfo.mainColors.map((color, index) => (
+                            <Tag key={index} color="cyan">{color}</Tag>
+                          ))}
+                        </Space>
+                      ) : (
+                        <Text>暂无数据</Text>
+                      )}
+                    </Card>
+                  </Col>
+                  <Col xs={24} sm={12}>
+                    <Card size="small" title="材质质感">
+                      <Text>{productInfo.materialTexture || '暂无数据'}</Text>
+                    </Card>
+                  </Col>
+                  <Col xs={24} sm={12}>
+                    <Card size="small" title="主要文字元素">
+                      {productInfo.textElements && productInfo.textElements.length > 0 ? (
+                        <Space wrap>
+                          {productInfo.textElements.map((text, index) => (
+                            <Tag key={index}>{text}</Tag>
+                          ))}
+                        </Space>
+                      ) : (
+                        <Text>暂无数据</Text>
+                      )}
+                    </Card>
+                  </Col>
+                  <Col xs={24} sm={12}>
+                    <Card size="small" title="使用场景暗示">
+                      {productInfo.usageScenarios && productInfo.usageScenarios.length > 0 ? (
+                        <Space wrap>
+                          {productInfo.usageScenarios.map((scenario, index) => (
+                            <Tag key={index} color="purple">{scenario}</Tag>
+                          ))}
+                        </Space>
+                      ) : (
+                        <Text>暂无数据</Text>
+                      )}
+                    </Card>
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+          </Row>
+
+          {/* TA画像选择 */}
+          <Card title="👥 选择TA画像" style={{ marginBottom: '24px' }}>
+            <Row gutter={[16, 16]}>
+              {taProfiles.map((ta) => (
+                <Col xs={24} sm={12} key={ta.id}>
+                  <Card
+                    hoverable
+                    onClick={() => setSelectedTA(ta.id)}
+                    style={{
+                      borderColor: selectedTA === ta.id ? '#1890ff' : undefined,
+                      backgroundColor: selectedTA === ta.id ? '#e6f7ff' : undefined,
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <Title level={5} style={{ margin: 0 }}>{ta.name}</Title>
+                      {selectedTA === ta.id && <CheckCircleOutlined style={{ color: '#1890ff', fontSize: '20px' }} />}
+                    </div>
+                    <Divider style={{ margin: '12px 0' }} />
+                    <Space direction="vertical" size="small" style={{ width: '100%' }}>
+                      <Text type="secondary">年龄段：{ta.age}</Text>
+                      <Text type="secondary">肤质/特征：{ta.skinType}</Text>
+                      <div>
+                        <Text type="secondary">痛点：</Text>
+                        <Space wrap size="small">
+                          {ta.painPoints.map((point, idx) => (
+                            <Tag key={idx} size="small" color="red">{point}</Tag>
+                          ))}
+                        </Space>
+                      </div>
+                      <div>
+                        <Text type="secondary">使用场景：</Text>
+                        <Space wrap size="small">
+                          {ta.scenes.map((scene, idx) => (
+                            <Tag key={idx} size="small" color="green">{scene}</Tag>
+                          ))}
+                        </Space>
+                      </div>
+                      <div>
+                        <Text type="secondary">消费动机：</Text>
+                        <Text>{ta.motivation}</Text>
+                      </div>
+                    </Space>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </Card>
+
+          {/* 场景和情节规模选择 */}
+          <Row gutter={[24, 24]} style={{ marginBottom: '24px' }}>
+            <Col xs={24} lg={12}>
+              <Card title="🎬 场景规模">
+                <Radio.Group 
+                  value={sceneScale} 
+                  onChange={(e) => setSceneScale(e.target.value)}
+                  style={{ width: '100%' }}
+                >
+                  <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+                    {sceneScales.map((scale) => (
+                      <Radio key={scale.value} value={scale.value} style={{ width: '100%' }}>
+                        <Space direction="vertical" size="small">
+                          <Text strong>{scale.label}</Text>
+                          <Text type="secondary" style={{ fontSize: '12px' }}>{scale.desc}</Text>
+                        </Space>
+                      </Radio>
+                    ))}
+                  </Space>
+                </Radio.Group>
+              </Card>
+            </Col>
+            <Col xs={24} lg={12}>
+              <Card title="📖 情节规模">
+                <Radio.Group 
+                  value={plotScale} 
+                  onChange={(e) => setPlotScale(e.target.value)}
+                  style={{ width: '100%' }}
+                >
+                  <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+                    {plotScales.map((scale) => (
+                      <Radio key={scale.value} value={scale.value} style={{ width: '100%' }}>
+                        <Space direction="vertical" size="small">
+                          <Text strong>{scale.label}</Text>
+                          <Text type="secondary" style={{ fontSize: '12px' }}>{scale.desc}</Text>
+                        </Space>
+                      </Radio>
+                    ))}
+                  </Space>
+                </Radio.Group>
+              </Card>
+            </Col>
+          </Row>
+
+          {/* 已选择信息汇总 */}
+          {selectedTAInfo && (
+            <Card title="✅ 已选择配置" style={{ marginBottom: '24px' }} type="inner">
+              <Space size="large" wrap>
+                <div>
+                  <Text type="secondary">TA画像：</Text>
+                  <Tag color="blue">{selectedTAInfo.name}</Tag>
+                </div>
+                <div>
+                  <Text type="secondary">场景规模：</Text>
+                  <Tag color="green">{sceneScale}</Tag>
+                </div>
+                <div>
+                  <Text type="secondary">情节规模：</Text>
+                  <Tag color="purple">{plotScale}</Tag>
+                </div>
+              </Space>
+            </Card>
+          )}
+        </>
+      )}
+
+      {/* 底部导航 */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '24px' }}>
+        <Button icon={<ArrowLeftOutlined />} onClick={onPrev}>
+          上一步
+        </Button>
+        <Space>
+          {productInfo && (
+            <Button icon={<ReloadOutlined />} onClick={handleResearch}>
+              重新调研
+            </Button>
+          )}
+          <Button 
+            type="primary" 
+            icon={<ArrowRightOutlined />} 
+            onClick={handleNext}
+            disabled={!productInfo || !selectedTA}
+          >
+            下一步
+          </Button>
+        </Space>
+      </div>
+    </div>
+  )
+}

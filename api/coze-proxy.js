@@ -30,7 +30,7 @@ export default async function handler(request) {
 
   try {
     const body = await request.json();
-    const { endpoint, token, sessionId, text } = body;
+    const { endpoint, token, projectId, sessionId, text } = body;
 
     if (!endpoint || !token) {
       return new Response(JSON.stringify({ error: 'Missing endpoint or token' }), {
@@ -65,6 +65,7 @@ export default async function handler(request) {
         },
         type: 'query',
         session_id: sessionId,
+        project_id: projectId,
       }),
     });
 

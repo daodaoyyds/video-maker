@@ -39,7 +39,7 @@ export async function callCozeAgent(
   request: CozeRequest,
   callbacks: CozeCallbacks
 ): Promise<void> {
-  const { endpoint, token } = config;
+  const { endpoint, token, projectId } = config;
   const { text, sessionId } = request;
 
   // 检查配置是否完整
@@ -60,6 +60,7 @@ export async function callCozeAgent(
       body: JSON.stringify({
         endpoint,
         token,
+        projectId,
         sessionId,
         text,
       }),
@@ -178,14 +179,14 @@ export const AGENT_CONFIGS = {
   productResearch: {
     endpoint: 'https://bcyhkv8qr9.coze.site/stream_run',
     token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjI3ZjhiZGYzLWM0YTQtNDU3Zi04YmFjLTE2OWFmZTZiOTAyNCJ9.eyJpc3MiOiJodHRwczovL2FwaS5jb3plLmNuIiwiYXVkIjpbIllseXp0ZGpqSk5ZTEp6SExmNGFZSjFkaUhtZ3pqVzhEIl0sImV4cCI6ODIxMDI2Njg3Njc5OSwiaWF0IjoxNzczNjQ1MjM3LCJzdWIiOiJzcGlmZmU6Ly9hcGkuY296ZS5jbi93b3JrbG9hZF9pZGVudGl0eS9pZDo3NjE1OTg3MjM2OTM2MzUxNzU0Iiwic3JjIjoiaW5ib3VuZF9hdXRoX2FjY2Vzc190b2tlbl9pZDo3NjE3NzQ4Mjg4MzgwMzM4MjI3In0.Xz9-WJrKalDOcYaPwKBIK26of3H1fh2PaWoOzRoYKfpD0Xl4XAEGguClfcjrCA0FSQenDvpN24G2fsuZ0w_PJOUg-Pr5M4YqOZmfRhdevKbQ1u9rUFZYpBYk8gVkFkd6lX3V_YgCE2BZOCAwPM8tz0DtlQqKxVEleli8dtzH0J5ef4JjP7hGewlZEOBbXTEsCX65Dq3RvG7XpSK_etAPgsuLTZueYHLX3ZvfXhkjk_0ukrvkilipsgD30jtErx9WMy4EtiG4Ax-Cf9-HiQq8Vh3Hn0aEIqQ-y3yQO05zJPJwRk_jAIVPYReqxVHtVeyS7Cy0kNmS0jKoo3NCFGkeBg',
-    projectId: '',
+    projectId: '7615987236936351754',
   },
   
   // Step 2 - 智能体2：TA画像调研（根据商品名进行舆情调研，推理TA画像）
   taResearch: {
     endpoint: 'https://ytkwtdyz82.coze.site/stream_run',
     token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjRkYTM5YTEyLTY3MjYtNDljZi05YzlmLTcyYWYzMjc4NDg1YyJ9.eyJpc3MiOiJodHRwczovL2FwaS5jb3plLmNuIiwiYXVkIjpbIkpqa255cE9jc2xDU1Y2SjZMb1FHSU8yNGxLSTdOM01rIl0sImV4cCI6ODIxMDI2Njg3Njc5OSwiaWF0IjoxNzczNTg2MTY0LCJzdWIiOiJzcGlmZmU6Ly9hcGkuY296ZS5jbi93b3JrbG9hZF9pZGVudGl0eS9pZDo3NjE2NzQ3MzY3NDU0MjEyMTA1Iiwic3JjIjoiaW5ib3VuZF9hdXRoX2FjY2Vzc190b2tlbl9pZDo3NjE3NDk0NTcxNTc1OTM0OTk1In0.VZ2Sci30fouZqZOJNpGpNO-QZ-1ORubBhnCHs6sP9-vlOiMdjB1H4MjYjWwBrS3e6288G3U_Zx6GvN_TmTS9miSrVB5vOCyGbjAOkBR6Cdx6v9TsMJ5xvLSMHwryGxJkXaBxxm_zCHQZf4E5Wub3pvp7bLgvKDq3VVPMfH8l4GD6Bldq-KmUWvcrTWGc2vygsVcIuOL3AbBfqclnqTKBVAUdqrcz3xFNMsoifpZNVJPT-fIJr4Ex2-ozChpq26lqtdMfX7xbnjGAm5_svI0FRfciQwSFANK28D6VOZcLvvzsW7NVRETkvkZznY_IMir6TnWK88Br0Bi_a4GtZuLOSA',
-    projectId: '',
+    projectId: '7616747367454212105',
   },
   
   // Step 3 - 智能体3：脚本提案（基于产品信息和TA画像生成脚本提案）

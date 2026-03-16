@@ -171,8 +171,11 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
           },
           onAnswer: (answer) => {
             fullAnswer += answer
+            console.log('Product answer chunk received, length:', answer.length, 'Total:', fullAnswer.length)
           },
           onEnd: () => {
+            console.log('Product onEnd called, fullAnswer length:', fullAnswer.length)
+            console.log('Product fullAnswer preview:', fullAnswer.substring(0, 500))
             // 解析返回的JSON
             try {
               const data = parseProductResponse(fullAnswer)
@@ -206,8 +209,11 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
           },
           onAnswer: (answer) => {
             fullAnswer += answer
+            console.log('TA answer chunk received, length:', answer.length, 'Total:', fullAnswer.length)
           },
           onEnd: () => {
+            console.log('TA onEnd called, fullAnswer length:', fullAnswer.length)
+            console.log('TA fullAnswer preview:', fullAnswer.substring(0, 500))
             // 解析返回的JSON
             try {
               const data = parseTAResponse(fullAnswer)

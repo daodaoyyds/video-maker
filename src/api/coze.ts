@@ -126,6 +126,8 @@ function handleCozeEvent(
   fullAnswer: { value: string }
 ): void {
   const { type, content } = event;
+  
+  console.log('handleCozeEvent received, type:', type, 'content keys:', Object.keys(content || {}));
 
   switch (type) {
     case 'message_start':

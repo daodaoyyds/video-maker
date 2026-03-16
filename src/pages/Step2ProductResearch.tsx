@@ -71,43 +71,48 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
 
   // 构建提示词
   const buildProductPrompt = useCallback(() => {
-    return `请根据以下商品信息，提供详细的产品调研报告：
+    return `请根据以下商品信息，提供详细的产品调研报告，并以JSON格式返回。
 
 商品名称：${productName}
 
-请提供以下信息：
-1. 基本信息：规格、参数、价格、适用人群
-2. 核心技术：产品采用的技术/成分
-3. 核心功效：产品的主要功效
-4. 解决痛点：产品解决的用户痛点
-5. 产品外观细节：
-   - 形态说明（外观描述，如：圆柱形瓶身、方形盒子等）
-   - 尺寸比例（如：高度10cm，直径3cm）
-   - 主色调（如：香槟金、玫瑰粉、纯白色）
-   - 主要文字元素（如：品牌名、产品名、容量标识）
-   - 材质质感（如：磨砂玻璃、亮面金属、哑光塑料）
-   - 使用场景暗示（如：便携小巧适合随身携带）
+请提供以下信息，并以JSON格式返回：
+{
+  "basicInfo": "规格、参数、价格、适用人群",
+  "coreTech": "产品采用的技术/成分",
+  "coreBenefits": "产品的主要功效",
+  "painPoints": "产品解决的用户痛点",
+  "formDescription": "外观描述，如：圆柱形瓶身、方形盒子等",
+  "sizeRatio": "尺寸比例，如：高度10cm，直径3cm",
+  "mainColors": ["主色调1", "主色调2"],
+  "textElements": ["文字元素1", "文字元素2"],
+  "materialTexture": "材质质感描述",
+  "usageScenarios": ["使用场景1", "使用场景2"]
+}
 
-请以JSON格式返回，便于程序解析。`
+请确保返回的是合法的JSON格式，不要包含任何其他文本。`
   }, [productName])
 
   const buildTAPrompt = useCallback(() => {
-    return `请根据以下商品名称，进行舆情调研并推理TA画像：
+    return `请根据以下商品名称，进行舆情调研并推理TA画像，并以JSON格式返回。
 
 商品名称：${productName}
 
-请提供：
-1. 基于社媒调研的核心卖点
-2. 高频痛点/讨论点
-3. 4个不同的TA画像，每个包含：
-   - TA名称
-   - 年龄段
-   - 肤质/特征
-   - 痛点列表
-   - 使用场景
-   - 消费动机
+请提供以下信息，并以JSON格式返回：
+{
+  "taProfiles": [
+    {
+      "id": "ta1",
+      "name": "TA名称",
+      "age": "年龄段",
+      "skinType": "肤质/特征",
+      "painPoints": ["痛点1", "痛点2"],
+      "scenes": ["使用场景1", "使用场景2"],
+      "motivation": "消费动机"
+    }
+  ]
+}
 
-请以JSON格式返回，便于程序解析。`
+请提供4个不同的TA画像，确保返回的是合法的JSON格式，不要包含任何其他文本。`
   }, [productName])
 
   // 并行调用两个智能体

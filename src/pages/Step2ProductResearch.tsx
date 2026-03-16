@@ -9,7 +9,7 @@ interface Step2Props {
   onPrev: () => void
 }
 
-const { Title, Text, Paragraph } = Typography
+const { Title, Text } = Typography
 
 // TA画像数据类型
 interface TAProfile {
@@ -64,7 +64,7 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
   const [plotScale, setPlotScale] = useState('轻度')
   
   // 会话ID（用于保持上下文）
-  const [sessionIds, setSessionIds] = useState({
+  const [, setSessionIds] = useState({
     product: '',
     ta: ''
   })
@@ -454,7 +454,7 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
                         <Text type="secondary">痛点：</Text>
                         <Space wrap size="small">
                           {ta.painPoints.map((point, idx) => (
-                            <Tag key={idx} size="small" color="red">{point}</Tag>
+                            <Tag key={idx} color="red">{point}</Tag>
                           ))}
                         </Space>
                       </div>
@@ -462,7 +462,7 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
                         <Text type="secondary">使用场景：</Text>
                         <Space wrap size="small">
                           {ta.scenes.map((scene, idx) => (
-                            <Tag key={idx} size="small" color="green">{scene}</Tag>
+                            <Tag key={idx} color="green">{scene}</Tag>
                           ))}
                         </Space>
                       </div>

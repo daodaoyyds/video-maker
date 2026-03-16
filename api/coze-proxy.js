@@ -42,6 +42,28 @@ export default async function handler(request) {
       });
     }
 
+    // 构建请求体
+    const requestBody = {
+      content: {
+        query: {
+          prompt: [
+            {
+              type: 'text',
+              content: {
+                text: text,
+              },
+            },
+          ],
+        },
+      },
+      type: 'query',
+      session_id: sessionId,
+      project_id: projectId ? parseInt(projectId, 10) : undefined,
+    };
+    
+    console.log('Request to Coze:', { endpoint, projectId, textLength: text.length });
+    console.log('Request body:', JSON.stringify(requestBody, null, 2));
+
     // 转发请求到扣子 API
     const response = await fetch(endpoint, {
       method: 'POST',
@@ -50,23 +72,7 @@ export default async function handler(request) {
         'Content-Type': 'application/json',
         'Accept': 'text/event-stream',
       },
-      body: JSON.stringify({
-        content: {
-          query: {
-            prompt: [
-              {
-                type: 'text',
-                content: {
-                  text: text,
-                },
-              },
-            ],
-          },
-        },
-        type: 'query',
-        session_id: sessionId,
-        project_id: projectId,
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     // 检查响应

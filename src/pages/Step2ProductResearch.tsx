@@ -320,17 +320,36 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
   const selectedTAInfo = taProfiles.find(ta => ta.id === selectedTA)
 
   return (
-    <div>
-      <Title level={4} style={{ marginBottom: '24px' }}>
+    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 16px' }}>
+      <Title level={3} style={{ marginBottom: '32px', fontSize: '28px', fontWeight: 600 }}>
         步骤 2：产品调研与TA画像分析
       </Title>
 
       {/* 开始调研按钮 */}
       {!productInfo && !loading && (
-        <Card style={{ marginBottom: '24px', textAlign: 'center' }}>
-          <Space direction="vertical" size="large" style={{ width: '100%' }}>
-            <Text type="secondary">点击下方按钮开始产品调研</Text>
-            <Button type="primary" size="large" onClick={handleResearch}>
+        <Card 
+          style={{ 
+            marginBottom: '32px', 
+            textAlign: 'center',
+            borderRadius: '12px',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
+            background: 'linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%)'
+          }}
+        >
+          <Space direction="vertical" size="large" style={{ width: '100%', padding: '24px 0' }}>
+            <Text type="secondary" style={{ fontSize: '16px' }}>点击下方按钮开始产品调研</Text>
+            <Button 
+              type="primary" 
+              size="large" 
+              onClick={handleResearch}
+              style={{ 
+                minWidth: '160px', 
+                minHeight: '48px',
+                borderRadius: '8px',
+                fontSize: '16px',
+                fontWeight: 500
+              }}
+            >
               开始调研
             </Button>
           </Space>
@@ -352,33 +371,74 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
       {productInfo && !loading && (
         <>
           {/* 产品基础信息 - 全宽展示 */}
-          <Card title="📱 产品信息" style={{ marginBottom: '24px' }}>
+          <Card 
+            title={<span style={{ fontSize: '20px', fontWeight: 600 }}>📱 产品信息</span>} 
+            style={{ 
+              marginBottom: '32px',
+              borderRadius: '12px',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
+            }}
+          >
             <Row gutter={[24, 24]} align="middle">
               <Col xs={24} md={6} lg={5}>
                 {productImage && (
                   <Image
                     src={productImage}
                     alt={productName}
-                    style={{ width: '100%', maxWidth: '200px', borderRadius: '8px', display: 'block', margin: '0 auto' }}
+                    style={{ 
+                      width: '100%', 
+                      maxWidth: '180px', 
+                      borderRadius: '12px', 
+                      display: 'block', 
+                      margin: '0 auto',
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                    }}
                   />
                 )}
               </Col>
               <Col xs={24} md={18} lg={19}>
-                <Title level={4} style={{ marginBottom: '16px' }}>{productName}</Title>
+                <Title level={4} style={{ marginBottom: '20px', fontSize: '24px', fontWeight: 600 }}>{productName}</Title>
                 <Row gutter={[16, 16]}>
                   <Col xs={24} sm={12} md={8}>
-                    <Card size="small" title="核心技术" bordered={false} style={{ background: '#f6ffed' }}>
-                      <Text>{productInfo.coreTech || '暂无'}</Text>
+                    <Card 
+                      size="small" 
+                      title={<span style={{ fontWeight: 600 }}>核心技术</span>} 
+                      bordered={false} 
+                      style={{ 
+                        background: 'linear-gradient(135deg, #f6ffed 0%, #e6f7ff 100%)',
+                        borderRadius: '8px',
+                        minHeight: '80px'
+                      }}
+                    >
+                      <Text style={{ fontSize: '14px' }}>{productInfo.coreTech || '暂无'}</Text>
                     </Card>
                   </Col>
                   <Col xs={24} sm={12} md={8}>
-                    <Card size="small" title="核心功效" bordered={false} style={{ background: '#e6f7ff' }}>
-                      <Text>{productInfo.coreBenefits || '暂无'}</Text>
+                    <Card 
+                      size="small" 
+                      title={<span style={{ fontWeight: 600 }}>核心功效</span>} 
+                      bordered={false} 
+                      style={{ 
+                        background: 'linear-gradient(135deg, #e6f7ff 0%, #f6ffed 100%)',
+                        borderRadius: '8px',
+                        minHeight: '80px'
+                      }}
+                    >
+                      <Text style={{ fontSize: '14px' }}>{productInfo.coreBenefits || '暂无'}</Text>
                     </Card>
                   </Col>
                   <Col xs={24} sm={12} md={8}>
-                    <Card size="small" title="解决痛点" bordered={false} style={{ background: '#fff2e8' }}>
-                      <Text>{productInfo.painPoints || '暂无'}</Text>
+                    <Card 
+                      size="small" 
+                      title={<span style={{ fontWeight: 600 }}>解决痛点</span>} 
+                      bordered={false} 
+                      style={{ 
+                        background: 'linear-gradient(135deg, #fff2e8 0%, #fff7e6 100%)',
+                        borderRadius: '8px',
+                        minHeight: '80px'
+                      }}
+                    >
+                      <Text style={{ fontSize: '14px' }}>{productInfo.painPoints || '暂无'}</Text>
                     </Card>
                   </Col>
                 </Row>
@@ -388,23 +448,58 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
 
           {/* 产品外观细节 - 全宽展示 */}
           <Card 
-            title="📦 产品外观细节" 
-            style={{ marginBottom: '24px' }}
-            extra={<Tag color="blue">AI分析</Tag>}
+            title={<span style={{ fontSize: '20px', fontWeight: 600 }}>📦 产品外观细节</span>}
+            style={{ 
+              marginBottom: '32px',
+              borderRadius: '12px',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
+              background: 'linear-gradient(180deg, #fafafa 0%, #f5f5f5 100%)'
+            }}
+            extra={<Tag color="blue" style={{ fontSize: '14px', padding: '4px 12px' }}>AI分析</Tag>}
           >
             <Row gutter={[16, 16]}>
               <Col xs={24} sm={12} md={8}>
-                <Card size="small" title="形态说明" bordered={false} style={{ background: '#f5f5f5' }}>
-                  <Text>{productInfo.formDescription || '暂无数据'}</Text>
+                <Card 
+                  size="small" 
+                  title={<span style={{ fontWeight: 600, fontSize: '14px' }}>形态说明</span>} 
+                  bordered={false} 
+                  style={{ 
+                    background: '#ffffff',
+                    borderRadius: '8px',
+                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.06)',
+                    minHeight: '100px'
+                  }}
+                >
+                  <Text style={{ fontSize: '14px' }}>{productInfo.formDescription || '暂无数据'}</Text>
                 </Card>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <Card size="small" title="尺寸比例" bordered={false} style={{ background: '#f5f5f5' }}>
-                  <Text>{productInfo.sizeRatio || '暂无数据'}</Text>
+                <Card 
+                  size="small" 
+                  title={<span style={{ fontWeight: 600, fontSize: '14px' }}>尺寸比例</span>} 
+                  bordered={false} 
+                  style={{ 
+                    background: '#ffffff',
+                    borderRadius: '8px',
+                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.06)',
+                    minHeight: '100px'
+                  }}
+                >
+                  <Text style={{ fontSize: '14px' }}>{productInfo.sizeRatio || '暂无数据'}</Text>
                 </Card>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <Card size="small" title="主色调" bordered={false} style={{ background: '#f5f5f5' }}>
+                <Card 
+                  size="small" 
+                  title={<span style={{ fontWeight: 600, fontSize: '14px' }}>主色调</span>} 
+                  bordered={false} 
+                  style={{ 
+                    background: '#ffffff',
+                    borderRadius: '8px',
+                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.06)',
+                    minHeight: '100px'
+                  }}
+                >
                   {productInfo.mainColors && productInfo.mainColors.length > 0 ? (
                     <Space wrap>
                       {productInfo.mainColors.map((color, index) => (
@@ -417,12 +512,32 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
                 </Card>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <Card size="small" title="材质质感" bordered={false} style={{ background: '#f5f5f5' }}>
-                  <Text>{productInfo.materialTexture || '暂无数据'}</Text>
+                <Card 
+                  size="small" 
+                  title={<span style={{ fontWeight: 600, fontSize: '14px' }}>材质质感</span>} 
+                  bordered={false} 
+                  style={{ 
+                    background: '#ffffff',
+                    borderRadius: '8px',
+                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.06)',
+                    minHeight: '100px'
+                  }}
+                >
+                  <Text style={{ fontSize: '14px' }}>{productInfo.materialTexture || '暂无数据'}</Text>
                 </Card>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <Card size="small" title="主要文字元素" bordered={false} style={{ background: '#f5f5f5' }}>
+                <Card 
+                  size="small" 
+                  title={<span style={{ fontWeight: 600, fontSize: '14px' }}>主要文字元素</span>} 
+                  bordered={false} 
+                  style={{ 
+                    background: '#ffffff',
+                    borderRadius: '8px',
+                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.06)',
+                    minHeight: '100px'
+                  }}
+                >
                   {productInfo.textElements && productInfo.textElements.length > 0 ? (
                     <Space wrap>
                       {productInfo.textElements.map((text, index) => (
@@ -435,7 +550,17 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
                 </Card>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <Card size="small" title="使用场景暗示" bordered={false} style={{ background: '#f5f5f5' }}>
+                <Card 
+                  size="small" 
+                  title={<span style={{ fontWeight: 600, fontSize: '14px' }}>使用场景暗示</span>} 
+                  bordered={false} 
+                  style={{ 
+                    background: '#ffffff',
+                    borderRadius: '8px',
+                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.06)',
+                    minHeight: '100px'
+                  }}
+                >
                   {productInfo.usageScenarios && productInfo.usageScenarios.length > 0 ? (
                     <Space wrap>
                       {productInfo.usageScenarios.map((scenario, index) => (
@@ -451,7 +576,14 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
           </Card>
 
           {/* TA画像选择 */}
-          <Card title="👥 选择TA画像" style={{ marginBottom: '24px' }}>
+          <Card 
+            title={<span style={{ fontSize: '20px', fontWeight: 600 }}>👥 选择TA画像</span>} 
+            style={{ 
+              marginBottom: '32px',
+              borderRadius: '12px',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
+            }}
+          >
             <Row gutter={[16, 16]}>
               {taProfiles.map((ta) => (
                 <Col xs={24} sm={12} key={ta.id}>
@@ -459,8 +591,12 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
                     hoverable
                     onClick={() => setSelectedTA(ta.id)}
                     style={{
-                      borderColor: selectedTA === ta.id ? '#1890ff' : undefined,
-                      backgroundColor: selectedTA === ta.id ? '#e6f7ff' : undefined,
+                      borderColor: selectedTA === ta.id ? '#1890ff' : '#f0f0f0',
+                      backgroundColor: selectedTA === ta.id ? '#e6f7ff' : '#ffffff',
+                      borderRadius: '12px',
+                      boxShadow: selectedTA === ta.id ? '0 4px 12px rgba(24, 144, 255, 0.15)' : '0 2px 8px rgba(0, 0, 0, 0.06)',
+                      transition: 'all 0.3s ease',
+                      minHeight: '200px'
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -499,9 +635,15 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
           </Card>
 
           {/* 场景和情节规模选择 */}
-          <Row gutter={[24, 24]} style={{ marginBottom: '24px' }}>
+          <Row gutter={[24, 24]} style={{ marginBottom: '32px' }}>
             <Col xs={24} lg={12}>
-              <Card title="🎬 场景规模">
+              <Card 
+                title={<span style={{ fontSize: '18px', fontWeight: 600 }}>🎬 场景规模</span>}
+                style={{
+                  borderRadius: '12px',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
+                }}
+              >
                 <Radio.Group 
                   value={sceneScale} 
                   onChange={(e) => setSceneScale(e.target.value)}
@@ -521,7 +663,13 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
               </Card>
             </Col>
             <Col xs={24} lg={12}>
-              <Card title="📖 情节规模">
+              <Card 
+                title={<span style={{ fontSize: '18px', fontWeight: 600 }}>📖 情节规模</span>}
+                style={{
+                  borderRadius: '12px',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
+                }}
+              >
                 <Radio.Group 
                   value={plotScale} 
                   onChange={(e) => setPlotScale(e.target.value)}
@@ -544,19 +692,27 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
 
           {/* 已选择信息汇总 */}
           {selectedTAInfo && (
-            <Card title="✅ 已选择配置" style={{ marginBottom: '24px' }} type="inner">
+            <Card 
+              title={<span style={{ fontSize: '16px', fontWeight: 600 }}>✅ 已选择配置</span>} 
+              style={{ 
+                marginBottom: '32px',
+                borderRadius: '12px',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
+                background: 'linear-gradient(135deg, #f6ffed 0%, #e6f7ff 100%)'
+              }}
+            >
               <Space size="large" wrap>
-                <div>
-                  <Text type="secondary">TA画像：</Text>
-                  <Tag color="blue">{selectedTAInfo.name}</Tag>
+                <div style={{ padding: '8px 12px', background: '#ffffff', borderRadius: '8px' }}>
+                  <Text type="secondary" style={{ fontSize: '14px' }}>TA画像：</Text>
+                  <Tag color="blue" style={{ fontSize: '14px', padding: '4px 12px' }}>{selectedTAInfo.name}</Tag>
                 </div>
-                <div>
-                  <Text type="secondary">场景规模：</Text>
-                  <Tag color="green">{sceneScale}</Tag>
+                <div style={{ padding: '8px 12px', background: '#ffffff', borderRadius: '8px' }}>
+                  <Text type="secondary" style={{ fontSize: '14px' }}>场景规模：</Text>
+                  <Tag color="green" style={{ fontSize: '14px', padding: '4px 12px' }}>{sceneScale}</Tag>
                 </div>
-                <div>
-                  <Text type="secondary">情节规模：</Text>
-                  <Tag color="purple">{plotScale}</Tag>
+                <div style={{ padding: '8px 12px', background: '#ffffff', borderRadius: '8px' }}>
+                  <Text type="secondary" style={{ fontSize: '14px' }}>情节规模：</Text>
+                  <Tag color="purple" style={{ fontSize: '14px', padding: '4px 12px' }}>{plotScale}</Tag>
                 </div>
               </Space>
             </Card>
@@ -565,13 +721,23 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
       )}
 
       {/* 底部导航 */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '24px' }}>
-        <Button icon={<ArrowLeftOutlined />} onClick={onPrev}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '32px', padding: '0 0 24px 0' }}>
+        <Button 
+          icon={<ArrowLeftOutlined />} 
+          onClick={onPrev}
+          size="large"
+          style={{ minWidth: '120px', minHeight: '44px' }}
+        >
           上一步
         </Button>
-        <Space>
+        <Space size="middle">
           {productInfo && (
-            <Button icon={<ReloadOutlined />} onClick={handleResearch}>
+            <Button 
+              icon={<ReloadOutlined />} 
+              onClick={handleResearch}
+              size="large"
+              style={{ minWidth: '120px', minHeight: '44px' }}
+            >
               重新调研
             </Button>
           )}
@@ -580,6 +746,8 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
             icon={<ArrowRightOutlined />} 
             onClick={handleNext}
             disabled={!productInfo || !selectedTA}
+            size="large"
+            style={{ minWidth: '120px', minHeight: '44px' }}
           >
             下一步
           </Button>

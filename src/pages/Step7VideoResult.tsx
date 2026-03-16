@@ -37,7 +37,7 @@ export default function Step7VideoResult({ onPrev }: Step7Props) {
   return (
     <div>
       <h2 style={{ marginBottom: '24px', fontSize: '20px' }}>
-        第七步：视频生成
+        步骤 5：视频生成
       </h2>
 
       {/* 置灰提示 */}

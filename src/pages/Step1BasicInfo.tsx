@@ -97,7 +97,7 @@ export default function Step1BasicInfo({ onNext }: Step1Props) {
   return (
     <div>
       <h2 style={{ marginBottom: '24px', fontSize: '20px' }}>
-        第一步：输入基础信息
+        步骤 1：基础信息
       </h2>
       
       <Form

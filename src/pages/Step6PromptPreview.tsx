@@ -172,7 +172,7 @@ ${fixedParams}
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 16px' }}>
       <Title level={3} style={{ marginBottom: '32px', fontSize: '28px', fontWeight: 600 }}>
-        步骤 6：提示词预览
+        步骤 4：提示词预览
       </Title>
 
       {/* 加载状态 */}

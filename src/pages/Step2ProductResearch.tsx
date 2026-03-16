@@ -364,7 +364,7 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 16px' }}>
       <Title level={3} style={{ marginBottom: '32px', fontSize: '28px', fontWeight: 600 }}>
-        步骤 2：产品调研与TA画像分析
+        步骤 2：产品调研
       </Title>
 
       {/* 开始调研按钮 */}

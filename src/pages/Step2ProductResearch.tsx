@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { Card, Button, Space, Spin, message, Tag, Radio, Row, Col, Typography, Progress, Descriptions, Image, Divider } from 'antd'
+import { Card, Button, Space, Spin, message, Tag, Radio, Row, Col, Typography, Progress, Image, Divider } from 'antd'
 import { ArrowLeftOutlined, ArrowRightOutlined, ReloadOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import { useProjectStore } from '../stores/projectStore'
 import { callCozeAgent, generateSessionId, AGENT_CONFIGS } from '../api/coze'
@@ -351,99 +351,104 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
       {/* 产品信息展示 */}
       {productInfo && !loading && (
         <>
-          <Row gutter={[24, 24]}>
-            {/* 左侧：产品图片和基本信息 */}
-            <Col xs={24} lg={8}>
-              <Card title="产品信息" style={{ marginBottom: '24px' }}>
+          {/* 产品基础信息 - 全宽展示 */}
+          <Card title="📱 产品信息" style={{ marginBottom: '24px' }}>
+            <Row gutter={[24, 24]} align="middle">
+              <Col xs={24} md={6} lg={5}>
                 {productImage && (
                   <Image
                     src={productImage}
                     alt={productName}
-                    style={{ width: '100%', marginBottom: '16px', borderRadius: '8px' }}
+                    style={{ width: '100%', maxWidth: '200px', borderRadius: '8px', display: 'block', margin: '0 auto' }}
                   />
                 )}
-                <Title level={5}>{productName}</Title>
-                <Divider />
-                <Descriptions column={1} size="small">
-                  <Descriptions.Item label="核心技术">
-                    {productInfo.coreTech || '暂无'}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="核心功效">
-                    {productInfo.coreBenefits || '暂无'}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="解决痛点">
-                    {productInfo.painPoints || '暂无'}
-                  </Descriptions.Item>
-                </Descriptions>
-              </Card>
-            </Col>
-
-            {/* 右侧：产品外观细节 */}
-            <Col xs={24} lg={16}>
-              <Card 
-                title="📦 产品外观细节" 
-                style={{ marginBottom: '24px' }}
-                extra={<Tag color="blue">AI分析</Tag>}
-              >
+              </Col>
+              <Col xs={24} md={18} lg={19}>
+                <Title level={4} style={{ marginBottom: '16px' }}>{productName}</Title>
                 <Row gutter={[16, 16]}>
-                  <Col xs={24} sm={12}>
-                    <Card size="small" title="形态说明">
-                      <Text>{productInfo.formDescription || '暂无数据'}</Text>
+                  <Col xs={24} sm={12} md={8}>
+                    <Card size="small" title="核心技术" bordered={false} style={{ background: '#f6ffed' }}>
+                      <Text>{productInfo.coreTech || '暂无'}</Text>
                     </Card>
                   </Col>
-                  <Col xs={24} sm={12}>
-                    <Card size="small" title="尺寸比例">
-                      <Text>{productInfo.sizeRatio || '暂无数据'}</Text>
+                  <Col xs={24} sm={12} md={8}>
+                    <Card size="small" title="核心功效" bordered={false} style={{ background: '#e6f7ff' }}>
+                      <Text>{productInfo.coreBenefits || '暂无'}</Text>
                     </Card>
                   </Col>
-                  <Col xs={24} sm={12}>
-                    <Card size="small" title="主色调">
-                      {productInfo.mainColors && productInfo.mainColors.length > 0 ? (
-                        <Space wrap>
-                          {productInfo.mainColors.map((color, index) => (
-                            <Tag key={index} color="cyan">{color}</Tag>
-                          ))}
-                        </Space>
-                      ) : (
-                        <Text>暂无数据</Text>
-                      )}
-                    </Card>
-                  </Col>
-                  <Col xs={24} sm={12}>
-                    <Card size="small" title="材质质感">
-                      <Text>{productInfo.materialTexture || '暂无数据'}</Text>
-                    </Card>
-                  </Col>
-                  <Col xs={24} sm={12}>
-                    <Card size="small" title="主要文字元素">
-                      {productInfo.textElements && productInfo.textElements.length > 0 ? (
-                        <Space wrap>
-                          {productInfo.textElements.map((text, index) => (
-                            <Tag key={index}>{text}</Tag>
-                          ))}
-                        </Space>
-                      ) : (
-                        <Text>暂无数据</Text>
-                      )}
-                    </Card>
-                  </Col>
-                  <Col xs={24} sm={12}>
-                    <Card size="small" title="使用场景暗示">
-                      {productInfo.usageScenarios && productInfo.usageScenarios.length > 0 ? (
-                        <Space wrap>
-                          {productInfo.usageScenarios.map((scenario, index) => (
-                            <Tag key={index} color="purple">{scenario}</Tag>
-                          ))}
-                        </Space>
-                      ) : (
-                        <Text>暂无数据</Text>
-                      )}
+                  <Col xs={24} sm={12} md={8}>
+                    <Card size="small" title="解决痛点" bordered={false} style={{ background: '#fff2e8' }}>
+                      <Text>{productInfo.painPoints || '暂无'}</Text>
                     </Card>
                   </Col>
                 </Row>
-              </Card>
-            </Col>
-          </Row>
+              </Col>
+            </Row>
+          </Card>
+
+          {/* 产品外观细节 - 全宽展示 */}
+          <Card 
+            title="📦 产品外观细节" 
+            style={{ marginBottom: '24px' }}
+            extra={<Tag color="blue">AI分析</Tag>}
+          >
+            <Row gutter={[16, 16]}>
+              <Col xs={24} sm={12} md={8}>
+                <Card size="small" title="形态说明" bordered={false} style={{ background: '#f5f5f5' }}>
+                  <Text>{productInfo.formDescription || '暂无数据'}</Text>
+                </Card>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <Card size="small" title="尺寸比例" bordered={false} style={{ background: '#f5f5f5' }}>
+                  <Text>{productInfo.sizeRatio || '暂无数据'}</Text>
+                </Card>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <Card size="small" title="主色调" bordered={false} style={{ background: '#f5f5f5' }}>
+                  {productInfo.mainColors && productInfo.mainColors.length > 0 ? (
+                    <Space wrap>
+                      {productInfo.mainColors.map((color, index) => (
+                        <Tag key={index} color="cyan">{color}</Tag>
+                      ))}
+                    </Space>
+                  ) : (
+                    <Text>暂无数据</Text>
+                  )}
+                </Card>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <Card size="small" title="材质质感" bordered={false} style={{ background: '#f5f5f5' }}>
+                  <Text>{productInfo.materialTexture || '暂无数据'}</Text>
+                </Card>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <Card size="small" title="主要文字元素" bordered={false} style={{ background: '#f5f5f5' }}>
+                  {productInfo.textElements && productInfo.textElements.length > 0 ? (
+                    <Space wrap>
+                      {productInfo.textElements.map((text, index) => (
+                        <Tag key={index}>{text}</Tag>
+                      ))}
+                    </Space>
+                  ) : (
+                    <Text>暂无数据</Text>
+                  )}
+                </Card>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <Card size="small" title="使用场景暗示" bordered={false} style={{ background: '#f5f5f5' }}>
+                  {productInfo.usageScenarios && productInfo.usageScenarios.length > 0 ? (
+                    <Space wrap>
+                      {productInfo.usageScenarios.map((scenario, index) => (
+                        <Tag key={index} color="purple">{scenario}</Tag>
+                      ))}
+                    </Space>
+                  ) : (
+                    <Text>暂无数据</Text>
+                  )}
+                </Card>
+              </Col>
+            </Row>
+          </Card>
 
           {/* TA画像选择 */}
           <Card title="👥 选择TA画像" style={{ marginBottom: '24px' }}>

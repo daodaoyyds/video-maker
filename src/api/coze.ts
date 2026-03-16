@@ -82,7 +82,7 @@ export async function callCozeAgent(
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
-    let fullAnswer = '';
+    const fullAnswer = { value: '' };
 
     while (true) {
       const { done, value } = await reader.read();
@@ -101,8 +101,7 @@ export async function callCozeAgent(
         if (dataLines.length === 0) continue;
 
         const dataText = dataLines.join('\n');
-        console.log('SSE data received:', dataText.substring(0, 200));
-
+        
         try {
           const parsed: CozeResponse = JSON.parse(dataText);
           handleCozeEvent(parsed, callbacks, fullAnswer);
@@ -124,7 +123,7 @@ export async function callCozeAgent(
 function handleCozeEvent(
   event: CozeResponse,
   callbacks: CozeCallbacks,
-  fullAnswer: string
+  fullAnswer: { value: string }
 ): void {
   const { type, content } = event;
 
@@ -137,7 +136,7 @@ function handleCozeEvent(
     case 'answer':
       // 核心：接收回答内容
       const answer = content?.answer || '';
-      fullAnswer += answer;
+      fullAnswer.value += answer;
       callbacks.onAnswer?.(answer);
       break;
 
@@ -152,8 +151,8 @@ function handleCozeEvent(
       break;
 
     case 'message_end':
-      // 消息结束
-      callbacks.onEnd?.(content);
+      // 消息结束，传递完整的回答
+      callbacks.onEnd?.({ answer: fullAnswer.value });
       break;
 
     case 'error':

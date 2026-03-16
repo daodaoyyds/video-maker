@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react'
-import { Card, Button, Space, Tag, Row, Col, Typography, Badge, Spin, message } from 'antd'
-import { ArrowLeftOutlined, ArrowRightOutlined, EyeOutlined, CheckCircleOutlined, ReloadOutlined } from '@ant-design/icons'
+import { Card, Button, Space, Tag, Row, Col, Typography, Badge, Spin, message, Divider } from 'antd'
+import { ArrowLeftOutlined, ArrowRightOutlined, CheckCircleOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useProjectStore, type ScriptProposal } from '../stores/projectStore'
 import { callCozeAgent, generateSessionId, AGENT_CONFIGS } from '../api/coze'
 
@@ -214,53 +214,29 @@ ${plotScale}
                     {script.summary}
                   </Paragraph>
 
-                  <Paragraph type="secondary" style={{ fontSize: '12px', marginTop: '8px' }}>
-                    <EyeOutlined style={{ marginRight: '4px' }} />
-                    点击卡片查看完整脚本详情
+                  <Divider style={{ margin: '12px 0' }} />
+
+                  <Paragraph style={{ fontSize: '14px' }}>
+                    <Text strong>大纲：</Text>
+                    <pre style={{ 
+                      backgroundColor: '#f5f5f5', 
+                      padding: '12px', 
+                      borderRadius: '8px',
+                      whiteSpace: 'pre-wrap',
+                      fontSize: '13px',
+                      lineHeight: '1.6',
+                      marginTop: '8px',
+                      maxHeight: '150px',
+                      overflow: 'auto'
+                    }}>
+                      {script.outline}
+                    </pre>
                   </Paragraph>
                 </Card>
               </Badge.Ribbon>
             </Col>
           ))}
         </Row>
-      )}
-
-      {/* 选中脚本详情 */}
-      {localSelected && (
-        <Card 
-          title={<span style={{ fontSize: '18px', fontWeight: 600 }}>📋 选中脚本详情</span>}
-          style={{ 
-            marginTop: '32px', 
-            backgroundColor: '#f6ffed', 
-            borderColor: '#b7eb8f',
-            borderRadius: '12px',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
-          }}
-        >
-          <Title level={4} style={{ marginBottom: '16px' }}>{localSelected.title}</Title>
-          <Tag color="blue" style={{ marginBottom: '16px', fontSize: '14px' }}>{localSelected.relationship}</Tag>
-          
-          <Paragraph style={{ fontSize: '14px' }}>
-            <Text strong>人物设定：</Text>
-            <br />
-            {localSelected.characterSetting}
-          </Paragraph>
-          
-          <Paragraph style={{ fontSize: '14px' }}>
-            <Text strong>大纲：</Text>
-            <pre style={{ 
-              backgroundColor: '#fff', 
-              padding: '16px', 
-              borderRadius: '8px',
-              whiteSpace: 'pre-wrap',
-              fontSize: '14px',
-              lineHeight: '1.8',
-              marginTop: '8px'
-            }}>
-              {localSelected.outline}
-            </pre>
-          </Paragraph>
-        </Card>
       )}
 
       {/* 底部导航 */}

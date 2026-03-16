@@ -50,28 +50,18 @@ export async function callCozeAgent(
   }
 
   try {
-    const response = await fetch(endpoint, {
+    // 使用代理 API 避免 CORS 问题
+    const proxyUrl = '/api/coze-proxy';
+    const response = await fetch(proxyUrl, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
-        'Accept': 'text/event-stream',
       },
       body: JSON.stringify({
-        content: {
-          query: {
-            prompt: [
-              {
-                type: 'text',
-                content: {
-                  text: text,
-                },
-              },
-            ],
-          },
-        },
-        type: 'query',
-        session_id: sessionId,
+        endpoint,
+        token,
+        sessionId,
+        text,
       }),
     });
 

@@ -28,7 +28,7 @@ export default function Step3ScriptProposal({ onNext, onPrev }: Step3Props) {
 
   // 构建提示词
   const buildScriptPrompt = useCallback(() => {
-    return `请根据以下信息，生成6个短视频脚本提案：
+    return `请根据以下信息，生成4个短视频脚本提案，并以JSON格式返回。
 
 【产品信息】
 商品名称：${productName}
@@ -45,14 +45,21 @@ ${sceneScale}
 【情节规模】
 ${plotScale}
 
-请生成6个不同的脚本提案，每个包含：
-1. 脚本标题
-2. 关系类型（自己/闺蜜/同事/妈妈/暧昧对象等）
-3. 人物设定
-4. 创意亮点摘要
-5. 详细大纲（场景、冲突、转折、结尾）
+请生成4个不同的脚本提案，并以JSON数组格式返回，每个脚本包含：
+{
+  "scripts": [
+    {
+      "id": "script1",
+      "title": "脚本标题",
+      "relationship": "关系类型（自己/闺蜜/同事/妈妈/暧昧对象等）",
+      "characterSetting": "人物设定",
+      "summary": "创意亮点摘要",
+      "outline": "详细大纲（场景、冲突、转折、结尾）"
+    }
+  ]
+}
 
-请以JSON格式返回，便于程序解析。`
+请确保返回的是合法的JSON格式，不要包含任何其他文本。`
   }, [productName, productInfo, selectedTA, sceneScale, plotScale])
 
   // 调用脚本生成智能体

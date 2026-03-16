@@ -136,6 +136,7 @@ function handleCozeEvent(
     case 'answer':
       // 核心：接收回答内容
       const answer = content?.answer || '';
+      console.log('handleCozeEvent answer event, answer length:', answer.length, 'content:', content);
       fullAnswer.value += answer;
       callbacks.onAnswer?.(answer);
       break;

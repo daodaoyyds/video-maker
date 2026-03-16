@@ -77,21 +77,21 @@ ${plotScale}
             message.destroy()
             try {
               const data = parseScriptResponse(fullAnswer)
-              setScripts(data)
-              message.success('脚本生成完成！')
+              if (data.length > 0) {
+                setScripts(data)
+                message.success('脚本生成完成！')
+              } else {
+                message.error('脚本生成失败：返回数据为空')
+              }
             } catch (error) {
               console.error('Parse script response error:', error)
-              // 使用模拟数据
-              setScripts(getMockScripts())
-              message.warning('使用默认脚本数据')
+              message.error('脚本生成失败：数据解析错误')
             }
           },
           onError: (error) => {
             message.destroy()
             console.error('Script generation error:', error)
-            // 使用模拟数据
-            setScripts(getMockScripts())
-            message.warning('使用默认脚本数据')
+            message.error('脚本生成失败：API调用错误')
           }
         }
       )
@@ -110,75 +110,7 @@ ${plotScale}
     throw new Error('No JSON found in response')
   }
 
-  // 模拟脚本数据（备用）
-  const getMockScripts = (): ScriptProposal[] => [
-    {
-      id: 'script1',
-      title: '早八通勤的伪素颜秘密',
-      relationship: '自己（内心OS）',
-      characterSetting: '25岁白领，干皮，早八匆忙出门',
-      summary: '通过内心独白展现产品快速上妆、伪素颜效果',
-      outline: `场景：化妆台前，时间紧迫
-冲突：时间不够，但肤色暗沉
-转折：使用产品，快速完成伪素颜妆容
-结尾：自信出门，同事夸赞"今天气色真好"`,
-    },
-    {
-      id: 'script2',
-      title: '闺蜜的贵妇体验',
-      relationship: '闺蜜',
-      characterSetting: '28岁闺蜜，追求精致生活',
-      summary: '闺蜜间分享贵妇级护肤体验，轻微攀比但温馨',
-      outline: `场景：咖啡厅约会
-冲突：闺蜜皮肤状态对比
-转折：分享产品使用心得
-结尾：两人一起变美，约定下次再约`,
-    },
-    {
-      id: 'script3',
-      title: '见客户的底气',
-      relationship: '同事/客户',
-      characterSetting: '30岁职场女性，需要见重要客户',
-      summary: '职场场景下，产品带来的自信与专业形象',
-      outline: `场景：办公室，下午见客户
-冲突：担心脱妆、肤色暗沉影响形象
-转折：补妆后状态回春
-结尾：客户夸赞专业，成功签单`,
-    },
-    {
-      id: 'script4',
-      title: '约会前的急救',
-      relationship: '暧昧对象',
-      characterSetting: '26岁女生，晚上有重要约会',
-      summary: '约会前紧急护肤，产品带来的惊喜转变',
-      outline: `场景：家中，约会前2小时
-冲突：熬夜后皮肤状态差，担心约会表现
-转折：使用产品急救，肌肤焕发光彩
-结尾：约会对象惊艳，"你今天真好看"`,
-    },
-    {
-      id: 'script5',
-      title: '越夜越美丽的秘密',
-      relationship: '自己',
-      characterSetting: '32岁，晚上有应酬',
-      summary: '长时间带妆场景，展现产品持久效果',
-      outline: `场景：晚上10点，应酬结束
-冲突：担心带妆一整天脱妆
-转折：照镜子发现越夜越美丽
-结尾：自拍发朋友圈，收获一堆赞`,
-    },
-    {
-      id: 'script6',
-      title: '妈妈的护肤课堂',
-      relationship: '妈妈',
-      characterSetting: '27岁女儿，妈妈关心护肤',
-      summary: '母女互动，妈妈传授护肤心得',
-      outline: `场景：家中，母女聊天
-冲突：妈妈担心女儿不会护肤
-转折：女儿展示产品，妈妈试用后惊艳
-结尾：妈妈也想要一瓶，母女一起护肤`,
-    },
-  ]
+
 
   // 组件加载时自动生成脚本
   useEffect(() => {

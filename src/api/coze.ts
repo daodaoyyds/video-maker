@@ -77,6 +77,7 @@ export async function callCozeAgent(
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error('Coze API HTTP Error:', response.status, errorText);
       throw new Error(`HTTP ${response.status}: ${errorText}`);
     }
 
@@ -109,17 +110,19 @@ export async function callCozeAgent(
         if (dataLines.length === 0) continue;
 
         const dataText = dataLines.join('\n');
+        console.log('SSE data received:', dataText.substring(0, 200));
 
         try {
           const parsed: CozeResponse = JSON.parse(dataText);
           handleCozeEvent(parsed, callbacks, fullAnswer);
         } catch (e) {
-          console.warn('Failed to parse SSE data:', dataText);
+          console.warn('Failed to parse SSE data:', dataText.substring(0, 200));
         }
       }
     }
   } catch (error) {
     console.error('Coze API Error:', error);
+    console.error('Request details:', { endpoint, sessionId, textLength: text.length });
     callbacks.onError?.(error);
   }
 }

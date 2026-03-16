@@ -203,7 +203,7 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
   // 调用TA画像调研智能体
   const callTAResearchAgent = async (sessionId: string): Promise<{ success: boolean; data: TAProfile[] }> => {
     return new Promise((resolve) => {
-      let fullAnswer = ''
+      const fullAnswer = { value: '' }
       
       callCozeAgent(
         AGENT_CONFIGS.taResearch,
@@ -213,15 +213,15 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
             setLoadingText('TA画像智能体正在调研...')
           },
           onAnswer: (answer) => {
-            fullAnswer += answer
-            console.log('TA answer chunk received, length:', answer.length, 'Total:', fullAnswer.length)
+            fullAnswer.value += answer
+            console.log('TA answer chunk received, length:', answer.length, 'Total:', fullAnswer.value.length)
           },
           onEnd: () => {
-            console.log('TA onEnd called, fullAnswer length:', fullAnswer.length)
-            console.log('TA fullAnswer preview:', fullAnswer.substring(0, 500))
+            console.log('TA onEnd called, fullAnswer length:', fullAnswer.value.length)
+            console.log('TA fullAnswer preview:', fullAnswer.value.substring(0, 500))
             // 解析返回的JSON
             try {
-              const data = parseTAResponse(fullAnswer)
+              const data = parseTAResponse(fullAnswer.value)
               resolve({ success: true, data })
             } catch (error) {
               console.error('Parse TA response error:', error)
@@ -262,17 +262,42 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
 
   // 解析TA画像响应
   const parseTAResponse = (response: string): TAProfile[] => {
-    // 尝试提取JSON（支持嵌套在文本中的JSON）
+    // 尝试提取JSON数组（支持嵌套在文本中的JSON）
+    const jsonArrayMatch = response.match(/\[[\s\S]*\]/)
+    if (jsonArrayMatch) {
+      try {
+        const data = JSON.parse(jsonArrayMatch[0])
+        if (Array.isArray(data)) {
+          // 转换新格式到旧格式
+          return data.map((item: any, index: number) => ({
+            id: `ta${index + 1}`,
+            name: item.ta_name || item.name || '未知',
+            age: item.target_audience?.split('，')[0] || item.age || '未知',
+            skinType: item.target_audience?.split('，')[1] || item.skinType || '未知',
+            painPoints: item.pain_points ? [item.pain_points] : item.painPoints || ['暂无'],
+            scenes: item.usage_scenarios ? [item.usage_scenarios] : item.scenes || ['暂无'],
+            motivation: item.consumption_motivation || item.motivation || '暂无',
+          }))
+        }
+      } catch (e) {
+        console.error('JSON array parse error:', e)
+      }
+    }
+    
+    // 尝试提取JSON对象（旧格式）
     const jsonMatch = response.match(/\{[\s\S]*?\}/)
     if (jsonMatch) {
       try {
         const data = JSON.parse(jsonMatch[0])
-        return data.taProfiles || data.TAProfiles || []
+        if (data.taProfiles || data.TAProfiles) {
+          return data.taProfiles || data.TAProfiles || []
+        }
       } catch (e) {
-        console.error('JSON parse error:', e)
+        console.error('JSON object parse error:', e)
         console.log('Response content:', response.substring(0, 500))
       }
     }
+    
     // 如果无法解析，返回空数组
     return []
   }

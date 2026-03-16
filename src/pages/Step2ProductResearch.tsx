@@ -231,23 +231,40 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
 
   // 解析产品调研响应
   const parseProductResponse = (response: string): ProductInfo => {
-    // 尝试提取JSON
-    const jsonMatch = response.match(/\{[\s\S]*\}/)
+    // 尝试提取JSON（支持嵌套在文本中的JSON）
+    const jsonMatch = response.match(/\{[\s\S]*?\}/)
     if (jsonMatch) {
-      return JSON.parse(jsonMatch[0])
+      try {
+        return JSON.parse(jsonMatch[0])
+      } catch (e) {
+        console.error('JSON parse error:', e)
+        console.log('Response content:', response.substring(0, 500))
+      }
     }
-    throw new Error('No JSON found in response')
+    // 如果无法解析，返回一个包含原始响应的对象
+    return {
+      basicInfo: response.substring(0, 200),
+      coreTech: '解析失败',
+      coreBenefits: '解析失败',
+      painPoints: '解析失败',
+    }
   }
 
   // 解析TA画像响应
   const parseTAResponse = (response: string): TAProfile[] => {
-    // 尝试提取JSON
-    const jsonMatch = response.match(/\{[\s\S]*\}/)
+    // 尝试提取JSON（支持嵌套在文本中的JSON）
+    const jsonMatch = response.match(/\{[\s\S]*?\}/)
     if (jsonMatch) {
-      const data = JSON.parse(jsonMatch[0])
-      return data.taProfiles || data.TAProfiles || []
+      try {
+        const data = JSON.parse(jsonMatch[0])
+        return data.taProfiles || data.TAProfiles || []
+      } catch (e) {
+        console.error('JSON parse error:', e)
+        console.log('Response content:', response.substring(0, 500))
+      }
     }
-    throw new Error('No JSON found in response')
+    // 如果无法解析，返回空数组
+    return []
   }
 
   // 模拟TA数据（仅用于初始化）

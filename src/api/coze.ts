@@ -192,10 +192,17 @@ export const AGENT_CONFIGS = {
   },
   
   // Step 3 - 智能体3：脚本提案（基于产品信息和TA画像生成脚本提案）
-  scriptGeneration: {
+  scriptProposal: {
     endpoint: 'https://k82jhyg2v9.coze.site/stream_run',
     token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjI3ZjhiZGYzLWM0YTQtNDU3Zi04YmFjLTE2OWFmZTZiOTAyNCJ9.eyJpc3MiOiJodHRwczovL2FwaS5jb3plLmNuIiwiYXVkIjpbIk0xaDk3RTNHMXR3a2JMdTVqcTlEcjRNMG9kZmlCYlZSIl0sImV4cCI6ODIxMDI2Njg3Njc5OSwiaWF0IjoxNzczNjcwOTA3LCJzdWIiOiJzcGlmZmU6Ly9hcGkuY296ZS5jbi93b3JrbG9hZF9pZGVudGl0eS9pZDo3NjE3ODE3OTE3NTE3NzI1NzQyIiwic3JjIjoiaW5ib3VuZF9hdXRoX2FjY2Vzc190b2tlbl9pZDo3NjE3ODU4NTQzMjkwNDE3MTkzIn0.UAJKZc8ILz_x6gF0LZmPqtqsSyy3Z2pOHSRKZENO0GZTW7G2PQMqGCBOAo1Lz0SjH4RFv3JtJ75jHTGEB3TsAGdkP_jwMlv6ru_ZCzKifdA8HYG-wtyefzUhGZcXP35Mkdmb54D-UtIZWVo51bNp1pIQvukJe4-I3r94_T8zdPI0F2GvAVBWY92zT5Adk8xTCP7B3KoCqxlK2M8d22rZwlaLXvHRyLVhybBB7Ig-JyXGlSs33Z5eSsgWwZrSfBAQvFPwFe-L7wO-UowPIRuefBz2eT2V7WgyCo1_3cUahrQ-VsJD8lU3njSAp3cu7Ooc5jpp8UZV8Aq3PvuO6ugTAw',
     projectId: '7617815009057357875',
+  },
+  
+  // Step 6 - 智能体6：剧情脚本生成（基于选中的脚本生成完整剧情）
+  scriptGeneration: {
+    endpoint: 'https://6wggt3vv54.coze.site/stream_run',
+    token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjI3ZjhiZGYzLWM0YTQtNDU3Zi04YmFjLTE2OWFmZTZiOTAyNCJ9.eyJpc3MiOiJodHRwczovL2FwaS5jb3plLmNuIiwiYXVkIjpbInBtYnhNNE9GdE5wU25oNlM2VThZQ0lqUkw0clZYeGVUIl0sImV4cCI6ODIxMDI2Njg3Njc5OSwiaWF0IjoxNzczNjc0NjE4LCJzdWIiOiJzcGlmZmU6Ly9hcGkuY296ZS5jbi93b3JrbG9hZF9pZGVudGl0eS9pZDo3NjE3ODYyMzc1ODMxNTAyODk5Iiwic3JjIjoiaW5ib3VuZF9hdXRoX2FjY2Vzc190b2tlbl9pZDo3NjE3ODc0NDgxMTI1NTIzNTEwIn0.Twdw9gSvWf438QVmEupirLRHH8YaTYpTOVMVrJDQ6HXfW6WM-XP914bGJJxYV5qMgH6MAc3-XjKFTFe8lCO9vRCaueaaUcICFGbyt0ll880su9Ws5F9OaYM_Tp5N4zC0QxarvRxh3L2NpiQxrqEnnbedT0PGFteLiwCXQVqNKMd57t8pO3rmzdvq-T-032Hxpg5_LhNch-dMiazZgWywFhyBX3HJLyDHuYxnevvnk7kagNZLRu1ILlzbDo7zaZ-ZS_kPsJWDc41o5o2ITnRl22m8qKw_c3SXh6mfM0kyu7gRp6H31LILXLQA-k9egzL-xwIX5zLm4k-9EcMrer4MZA',
+    projectId: '7617859662742011942',
   },
   
   // 智能体4：脚本增强（待配置）

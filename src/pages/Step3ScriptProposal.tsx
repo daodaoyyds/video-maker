@@ -108,7 +108,7 @@ ${plotScale}
       let fullAnswer = ''
       
       await callCozeAgent(
-        AGENT_CONFIGS.scriptGeneration,
+        AGENT_CONFIGS.scriptProposal,
         { text: buildScriptPrompt(), sessionId },
         {
           onStart: () => {

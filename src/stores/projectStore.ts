@@ -43,11 +43,36 @@ export interface ProductInfo {
 
 export interface ScriptProposal {
   id: string
+  script_id?: string
   title: string
-  relationship: string
-  characterSetting: string
-  summary: string
-  outline: string
+  relationship: string | { dimension: string; specific: string }
+  characterSetting?: string
+  summary?: string
+  outline?: string
+  scene?: {
+    location: string
+    function: string
+  }
+  character?: {
+    age: string
+    occupation: string
+    appearance: string
+    clothing: string
+    emotional_state: string
+  }
+  constraints?: string[]
+  rhythm_curve?: string[]
+  script_detail?: {
+    hook: { time_range: string; description: string }
+    pain_point_exposure: { time_range: string; description: string }
+    product_solution: { time_range: string; description: string }
+    ending: { time_range: string; description: string }
+  }
+  diversity_tags?: {
+    reversal_type: string
+    conflict_dimension: string
+    pain_exposure_method: string
+  }
 }
 
 export interface EnhancedScript {

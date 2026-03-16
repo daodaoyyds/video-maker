@@ -38,7 +38,9 @@ export default function Step4ScriptDetail({ onNext, onPrev }: Step4Props) {
 
       <Card title={`📖 ${selectedScript?.title}`} style={{ marginBottom: '24px' }}>
         <Tag color="blue" style={{ marginBottom: '16px' }}>
-          {selectedScript?.relationship}
+          {typeof selectedScript?.relationship === 'string' 
+            ? selectedScript?.relationship 
+            : selectedScript?.relationship?.dimension || '未知'}
         </Tag>
 
         <Row gutter={[24, 24]}>

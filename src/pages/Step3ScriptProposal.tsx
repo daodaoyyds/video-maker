@@ -45,21 +45,58 @@ ${sceneScale}
 【情节规模】
 ${plotScale}
 
-请生成4个不同的脚本提案，并以JSON数组格式返回，每个脚本包含：
+请生成4个不同的脚本提案，并以JSON格式返回，必须包含以下完整字段：
+
 {
   "scripts": [
     {
-      "id": "script1",
+      "script_id": "脚本1-1",
       "title": "脚本标题",
-      "relationship": "关系类型（自己/闺蜜/同事/妈妈/暧昧对象等）",
-      "characterSetting": "人物设定",
-      "summary": "创意亮点摘要",
-      "outline": "详细大纲（场景、冲突、转折、结尾）"
+      "relationship": {
+        "dimension": "关系维度",
+        "specific": "具体关系描述"
+      },
+      "scene": {
+        "location": "场景地点",
+        "function": "场景的专属功能"
+      },
+      "character": {
+        "age": "年龄",
+        "occupation": "职业",
+        "appearance": "外貌特征",
+        "clothing": "穿着风格",
+        "emotional_state": "当下情绪状态"
+      },
+      "constraints": ["硬性约束1", "硬性约束2"],
+      "rhythm_curve": ["情绪阶段1", "情绪阶段2", "情绪阶段3"],
+      "script_detail": {
+        "hook": {
+          "time_range": "0-2s",
+          "description": "钩子描述"
+        },
+        "pain_point_exposure": {
+          "time_range": "3-7s",
+          "description": "痛点暴露描述"
+        },
+        "product_solution": {
+          "time_range": "8-12s",
+          "description": "产品解决描述"
+        },
+        "ending": {
+          "time_range": "13-15s",
+          "description": "结尾描述"
+        }
+      },
+      "diversity_tags": {
+        "reversal_type": "反转类型",
+        "conflict_dimension": "冲突维度",
+        "pain_exposure_method": "痛点暴露方式"
+      }
     }
   ]
 }
 
-请确保返回的是合法的JSON格式，不要包含任何其他文本。`
+请确保返回的是合法的JSON格式，包含所有字段，不要包含任何其他文本。`
   }, [productName, productInfo, selectedTA, sceneScale, plotScale])
 
   // 调用脚本生成智能体
@@ -109,33 +146,32 @@ ${plotScale}
 
   // 解析脚本响应
   const parseScriptResponse = (response: string): ScriptProposal[] => {
-    // 尝试匹配 JSON 数组
-    const arrayMatch = response.match(/\[[\s\S]*\]/)
-    if (arrayMatch) {
-      try {
-        const data = JSON.parse(arrayMatch[0])
-        if (Array.isArray(data)) {
-          return data.map((item: any, index: number) => ({
-            id: item.id || `script${index + 1}`,
-            title: item.title || item.script_title || '未命名脚本',
-            relationship: item.relationship || item.character_relationship || '未知',
-            characterSetting: item.characterSetting || item.character_setting || item.target_audience || '暂无',
-            summary: item.summary || item.creative_highlights || '暂无',
-            outline: item.outline || item.script_outline || '暂无',
-          }))
-        }
-      } catch (e) {
-        console.error('Array parse error:', e)
-      }
-    }
-    
-    // 尝试匹配 JSON 对象
+    // 尝试匹配 JSON 对象（包含 scripts 数组）
     const objectMatch = response.match(/\{[\s\S]*\}/)
     if (objectMatch) {
       try {
         const data = JSON.parse(objectMatch[0])
-        if (data.scripts || data.proposals) {
-          return data.scripts || data.proposals || []
+        if (data.scripts && Array.isArray(data.scripts)) {
+          return data.scripts.map((item: any, index: number) => ({
+            id: item.script_id || `script${index + 1}`,
+            script_id: item.script_id,
+            title: item.title || '未命名脚本',
+            relationship: item.relationship || '未知',
+            characterSetting: item.character ? `${item.character.age}，${item.character.occupation}，${item.character.appearance}` : '暂无',
+            summary: item.scene ? `${item.scene.location} - ${item.scene.function}` : '暂无',
+            outline: item.script_detail ? 
+              `钩子(${item.script_detail.hook?.time_range}): ${item.script_detail.hook?.description}\n` +
+              `痛点(${item.script_detail.pain_point_exposure?.time_range}): ${item.script_detail.pain_point_exposure?.description}\n` +
+              `解决(${item.script_detail.product_solution?.time_range}): ${item.script_detail.product_solution?.description}\n` +
+              `结尾(${item.script_detail.ending?.time_range}): ${item.script_detail.ending?.description}`
+              : '暂无',
+            scene: item.scene,
+            character: item.character,
+            constraints: item.constraints,
+            rhythm_curve: item.rhythm_curve,
+            script_detail: item.script_detail,
+            diversity_tags: item.diversity_tags,
+          }))
         }
       } catch (e) {
         console.error('Object parse error:', e)
@@ -229,7 +265,11 @@ ${plotScale}
                   </div>
 
                   <Space wrap style={{ marginBottom: '12px' }}>
-                    <Tag color="blue" style={{ fontSize: '13px' }}>{script.relationship}</Tag>
+                    <Tag color="blue" style={{ fontSize: '13px' }}>
+                      {typeof script.relationship === 'string' 
+                        ? script.relationship 
+                        : script.relationship?.dimension || '未知'}
+                    </Tag>
                   </Space>
 
                   <Paragraph style={{ fontSize: '14px' }}>

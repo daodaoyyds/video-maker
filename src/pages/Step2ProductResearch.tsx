@@ -74,7 +74,6 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
     return `请根据以下商品信息，提供详细的产品调研报告：
 
 商品名称：${productName}
-商品图片：${productImage || '未提供'}
 
 请提供以下信息：
 1. 基本信息：规格、参数、价格、适用人群
@@ -90,7 +89,7 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
    - 使用场景暗示（如：便携小巧适合随身携带）
 
 请以JSON格式返回，便于程序解析。`
-  }, [productName, productImage])
+  }, [productName])
 
   const buildTAPrompt = useCallback(() => {
     return `请根据以下商品名称，进行舆情调研并推理TA画像：

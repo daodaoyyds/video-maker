@@ -33,6 +33,12 @@ export interface ProductInfo {
   coreTech: string
   coreBenefits: string
   painPoints: string
+  formDescription?: string
+  sizeRatio?: string
+  mainColors?: string[]
+  textElements?: string[]
+  materialTexture?: string
+  usageScenarios?: string[]
 }
 
 export interface ScriptProposal {

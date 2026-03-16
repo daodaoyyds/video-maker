@@ -195,10 +195,10 @@ export const AGENT_CONFIGS = {
     projectId: '',
   },
   
-  // 智能体3：脚本生成（待配置）
+  // Step 3 - 智能体3：脚本生成（基于产品信息和TA画像生成脚本提案）
   scriptGeneration: {
-    endpoint: '',
-    token: '',
+    endpoint: 'https://zh5y3nh4sz.coze.site/stream_run',
+    token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjI3ZjhiZGYzLWM0YTQtNDU3Zi04YmFjLTE2OWFmZTZiOTAyNCJ9.eyJpc3MiOiJodHRwczovL2FwaS5jb3plLmNuIiwiYXVkIjpbImtDcXpQQUk5cnVxZTlYWUhKTHdSVUwwS1hZWW5aOHRqIl0sImV4cCI6ODIxMDI2Njg3Njc5OSwiaWF0IjoxNzczNjQyMjE1LCJzdWIiOiJzcGlmZmU6Ly9hcGkuY296ZS5jbi93b3JrbG9hZF9pZGVudGl0eS9pZDo3NjE2NzQ3OTg0MzY5MjIxNjgyIiwic3JjIjoiaW5ib3VuZF9hdXRoX2FjY2Vzc190b2tlbl9pZDo3NjE3NzM1MzEyMTQ3NDgwNjIyIn0.fD_0KEEAOiolK3W1Rkv1VOWCE0FGO7itg1kLCOaWtRq74DcAvYvdNJhRQlu1J0yYGtIZ52aWsgxJuq4ZKzgRMlsTGIITHlIpHBYvDtWL3BlBkILnW70Txk5oog9SksybGRbY33P9Lqadiz89DHlr6wMGtTJhUDqq18oHwxfpLO3Ge98mK6Xnidcu0VBdet7T69zG354cZK81O_-pzCVsCNlX9hDc_ZqQNBHL8NRcLraUJYZ9doY1X2QUu3sTZ8OO1-5KVFSbtQL-76PsN_nedHvH78Q59kUdQkj8ILxUPY_8mRVnxDcIw2tMRP0Fz3cENvm5PdiTjymJj3P0N4PtlQ',
     projectId: '',
   },
   

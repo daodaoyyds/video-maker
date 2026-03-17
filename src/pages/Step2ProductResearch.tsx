@@ -71,25 +71,24 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
 
   // 构建提示词
   const buildProductPrompt = useCallback(() => {
-    return `请根据以下商品信息，提供详细的产品调研报告，并以JSON格式返回。
+    return `请根据商品名称"${productName}"，搜索并提供详细的产品调研信息。
 
-商品名称：${productName}
+请严格按照以下JSON格式返回，不要添加任何其他文字说明：
 
-请提供以下信息，并以JSON格式返回：
 {
-  "basicInfo": "规格、参数、价格、适用人群",
-  "coreTech": "产品采用的技术/成分",
-  "coreBenefits": "产品的主要功效",
+  "basicInfo": "产品的规格、参数、价格、适用人群等信息",
+  "coreTech": "产品采用的核心技术或成分",
+  "coreBenefits": "产品的主要功效和作用",
   "painPoints": "产品解决的用户痛点",
-  "formDescription": "外观描述，如：圆柱形瓶身、方形盒子等",
-  "sizeRatio": "尺寸比例，如：高度10cm，直径3cm",
-  "mainColors": ["主色调1", "主色调2"],
-  "textElements": ["文字元素1", "文字元素2"],
-  "materialTexture": "材质质感描述",
-  "usageScenarios": ["使用场景1", "使用场景2"]
+  "formDescription": "产品外观形态描述",
+  "sizeRatio": "产品尺寸比例",
+  "mainColors": ["颜色1", "颜色2"],
+  "textElements": ["文字1", "文字2"],
+  "materialTexture": "材质质感",
+  "usageScenarios": ["场景1", "场景2"]
 }
 
-请确保返回的是合法的JSON格式，不要包含任何其他文本。`
+重要：只返回JSON，不要markdown代码块，不要解释说明。`
   }, [productName])
 
   const buildTAPrompt = useCallback(() => {

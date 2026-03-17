@@ -115,7 +115,7 @@ interface ProjectStore extends ProjectData {
 const initialState: ProjectData = {
   productName: '',
   productImage: null,
-  videoDuration: 15,
+  videoDuration: 8,
   aspectRatio: '9:16',
   productInfo: null,
   selectedTA: null,

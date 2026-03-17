@@ -10,9 +10,9 @@ interface Step1Props {
 }
 
 const durationOptions = [
-  { label: '15秒', value: 15 },
-  { label: '30秒', value: 30 },
-  { label: '60秒', value: 60 },
+  { label: '4秒', value: 4 },
+  { label: '8秒', value: 8 },
+  { label: '12秒', value: 12 },
 ]
 
 const aspectRatioOptions = [

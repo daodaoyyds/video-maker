@@ -293,7 +293,7 @@ export default function Step7VideoResult({ onPrev }: Step7Props) {
             </div>
             <div style={{ marginBottom: '8px' }}>
               <Text strong>视频时长：</Text>
-              <Text>{clampDuration(videoDuration)}秒 (API限制5-12秒)</Text>
+              <Text>{clampDuration(videoDuration)}秒 (API限制4-12秒)</Text>
             </div>
             <div style={{ marginBottom: '8px' }}>
               <Text strong>画面比例：</Text>

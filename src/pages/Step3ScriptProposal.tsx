@@ -336,7 +336,7 @@ ${plotScale}
             size="large"
             style={{ minWidth: '120px', minHeight: '44px' }}
           >
-            下一步：脚本增强
+            下一步：提示词预览
           </Button>
         </Space>
       </div>

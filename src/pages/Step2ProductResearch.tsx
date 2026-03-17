@@ -92,26 +92,28 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
   }, [productName])
 
   const buildTAPrompt = useCallback(() => {
-    return `请根据以下商品名称，进行舆情调研并推理TA画像，并以JSON格式返回。
+    return `请针对商品"${productName}"进行目标用户(TA)画像分析。
 
-商品名称：${productName}
+请搜索该商品的典型用户群体，分析他们的特征，并严格按照以下JSON格式返回4个不同的TA画像：
 
-请提供以下信息，并以JSON格式返回：
 {
   "taProfiles": [
     {
       "id": "ta1",
-      "name": "TA名称",
-      "age": "年龄段",
-      "skinType": "肤质/特征",
+      "name": "TA画像名称，如：都市白领女性",
+      "age": "年龄段，如：25-35岁",
+      "skinType": "特征描述，如：注重品质、追求效率",
       "painPoints": ["痛点1", "痛点2"],
       "scenes": ["使用场景1", "使用场景2"],
-      "motivation": "消费动机"
+      "motivation": "购买动机"
     }
   ]
 }
 
-请提供4个不同的TA画像，确保返回的是合法的JSON格式，不要包含任何其他文本。`
+要求：
+1. 必须基于"${productName}"这个具体商品
+2. 提供4个不同的TA画像
+3. 只返回JSON，不要markdown代码块，不要解释说明`
   }, [productName])
 
   // 并行调用两个智能体

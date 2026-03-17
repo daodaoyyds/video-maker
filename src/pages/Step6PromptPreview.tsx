@@ -12,13 +12,14 @@ interface Step6Props {
 const { Title, Text } = Typography
 const { TabPane } = Tabs
 
-export default function Step6PromptPreview({ onPrev }: Step6Props) {
+export default function Step6PromptPreview({ onNext, onPrev }: Step6Props) {
   const { 
     productName,
     productInfo,
     selectedScript,
     sceneScale,
-    plotScale
+    plotScale,
+    setStep6Data,
   } = useProjectStore()
 
   const [loading, setLoading] = useState(false)
@@ -46,25 +47,11 @@ ${plotScale}
 请生成完整的剧情脚本，包含详细的分镜描述、台词、动作等，以 Markdown 格式返回。`
   }, [productName, selectedScript, sceneScale, plotScale])
 
-  // 生成产品详情 Markdown
+  // 生成产品详情 Markdown - 只包含外观相关字段
   const generateProductDetails = useCallback(() => {
     if (!productInfo) return '暂无产品信息'
     
-    return `# ${productName}
-
-## 基本信息
-${productInfo.basicInfo || '暂无'}
-
-## 核心技术
-${productInfo.coreTech || '暂无'}
-
-## 核心功效
-${productInfo.coreBenefits || '暂无'}
-
-## 解决痛点
-${productInfo.painPoints || '暂无'}
-
-## 产品外观
+    return `## 产品外观
 
 ### 形态说明
 ${productInfo.formDescription || '暂无'}
@@ -84,7 +71,7 @@ ${productInfo.materialTexture || '暂无'}
 ### 使用场景
 ${productInfo.usageScenarios?.join('、') || '暂无'}
 `
-  }, [productName, productInfo])
+  }, [productInfo])
 
   // 固定参数
   const fixedParams = `## 拍摄参数
@@ -101,6 +88,32 @@ ${productInfo.usageScenarios?.join('、') || '暂无'}
 - 格式: MP4
 - 编码: H.264
 `
+
+  // 获取完整提示词
+  const getFullPrompt = useCallback(() => {
+    return `# 剧情脚本
+
+${scriptContent}
+
+---
+
+# 产品细节
+
+${productDetails}
+
+---
+
+# 固定参数
+
+${fixedParams}
+`
+  }, [scriptContent, productDetails, fixedParams])
+
+  // 保存 finalPrompt 到 store
+  const saveFinalPrompt = useCallback(() => {
+    const fullPrompt = getFullPrompt()
+    setStep6Data({ finalPrompt: fullPrompt })
+  }, [getFullPrompt, setStep6Data])
 
   // 调用智能体生成剧情脚本
   const generateScript = async () => {
@@ -146,27 +159,26 @@ ${productInfo.usageScenarios?.join('、') || '暂无'}
     setProductDetails(generateProductDetails())
   }, [])
 
+  // 当内容变化时，自动保存到 store
+  useEffect(() => {
+    if (scriptContent && productDetails) {
+      saveFinalPrompt()
+    }
+  }, [scriptContent, productDetails, saveFinalPrompt])
+
   // 复制完整提示词
   const handleCopyPrompt = () => {
-    const fullPrompt = `# 剧情脚本
-
-${scriptContent}
-
----
-
-# 产品细节
-
-${productDetails}
-
----
-
-# 固定参数
-
-${fixedParams}
-`
+    const fullPrompt = getFullPrompt()
     navigator.clipboard.writeText(fullPrompt).then(() => {
       message.success('提示词已复制到剪贴板！')
     })
+  }
+
+  // 进入下一步（视频生成）
+  const handleNext = () => {
+    // 确保保存最新的提示词
+    saveFinalPrompt()
+    onNext()
   }
 
   return (
@@ -221,8 +233,8 @@ ${fixedParams}
             </Card>
           </TabPane>
 
-          {/* 第二部分：产品细节 */}
-          <TabPane tab="📦 产品细节" key="2">
+          {/* 第二部分：产品外观 */}
+          <TabPane tab="📦 产品外观" key="2">
             <Card 
               style={{ borderRadius: '12px' }}
               extra={
@@ -231,7 +243,7 @@ ${fixedParams}
                   icon={<CopyOutlined />}
                   onClick={() => {
                     navigator.clipboard.writeText(productDetails)
-                    message.success('产品细节已复制！')
+                    message.success('产品外观已复制！')
                   }}
                 >
                   复制
@@ -298,7 +310,7 @@ ${fixedParams}
           <Button
             type="primary"
             icon={<VideoCameraOutlined />}
-            disabled
+            onClick={handleNext}
             size="large"
             style={{ minWidth: '140px', minHeight: '44px' }}
           >

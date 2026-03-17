@@ -1,10 +1,10 @@
 /**
- * Cloudsway 视频生成 API 封装
+ * Cloudsway 视频生成 API 封装（通过 Vercel 代理）
  * 文档: https://docs.cloudsway.net/zh/maasapi/api-reference/video/Sora/
  */
 
-const API_KEY = 'C3GxBl02Wh5nlP6ypAQN'
-const ENDPOINT = 'https://genaiapi.cloudsway.net/v1/ai/kvWjKjkVWRnDbOFw'
+// 使用 Vercel API 代理，避免 CORS 问题
+const PROXY_ENDPOINT = '/api'
 
 export interface GenerateVideoRequest {
   prompt: string
@@ -21,25 +21,20 @@ export interface VideoStatus {
 
 /**
  * Step 1: 生成视频任务
- * POST /videos
+ * POST /api/video-generate
  */
 export async function generateVideo(request: GenerateVideoRequest): Promise<string> {
-  const formData = new FormData()
-  formData.append('prompt', request.prompt)
-  formData.append('size', request.size)
-  formData.append('seconds', request.seconds)
-
-  const response = await fetch(`${ENDPOINT}/videos`, {
+  const response = await fetch(`${PROXY_ENDPOINT}/video-generate`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json',
     },
-    body: formData,
+    body: JSON.stringify(request),
   })
 
   if (!response.ok) {
-    const errorText = await response.text()
-    throw new Error(`生成视频失败: ${response.status} - ${errorText}`)
+    const errorData = await response.json().catch(() => ({}))
+    throw new Error(errorData.error || `生成视频失败: ${response.status}`)
   }
 
   const data = await response.json()
@@ -54,19 +49,19 @@ export async function generateVideo(request: GenerateVideoRequest): Promise<stri
 
 /**
  * Step 2: 查询视频状态
- * GET /videos/{video_id}
+ * GET /api/video-status?videoId={id}
  */
 export async function queryVideoStatus(videoId: string): Promise<VideoStatus> {
-  const response = await fetch(`${ENDPOINT}/videos/${videoId}`, {
+  const response = await fetch(`${PROXY_ENDPOINT}/video-status?videoId=${encodeURIComponent(videoId)}`, {
     method: 'GET',
     headers: {
-      'Authorization': `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json',
     },
   })
 
   if (!response.ok) {
-    const errorText = await response.text()
-    throw new Error(`查询状态失败: ${response.status} - ${errorText}`)
+    const errorData = await response.json().catch(() => ({}))
+    throw new Error(errorData.error || `查询状态失败: ${response.status}`)
   }
 
   const data = await response.json()
@@ -81,11 +76,11 @@ export async function queryVideoStatus(videoId: string): Promise<VideoStatus> {
 
 /**
  * Step 3: 下载视频
- * GET /videos/{video_id}/content
+ * GET /api/video-download?videoId={id}
  */
 export async function getVideoDownloadUrl(videoId: string): Promise<string> {
-  // 返回下载URL，实际下载由前端处理
-  return `${ENDPOINT}/videos/${videoId}/content`
+  // 返回代理下载URL
+  return `${PROXY_ENDPOINT}/video-download?videoId=${encodeURIComponent(videoId)}`
 }
 
 /**

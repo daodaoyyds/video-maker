@@ -61,8 +61,20 @@ export default async function handler(request) {
       project_id: projectId ? parseInt(projectId, 10) : undefined,
     };
     
-    console.log('Request to Coze:', { endpoint, projectId, textLength: text.length });
-    console.log('Request body:', JSON.stringify(requestBody, null, 2));
+    // 记录请求日志到文件
+    const fs = require('fs');
+    const logDir = '/tmp/coze-logs';
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir, { recursive: true });
+    }
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const logFile = `${logDir}/coze-request-${timestamp}.log`;
+    
+    fs.appendFileSync(logFile, `=== REQUEST ===\n`);
+    fs.appendFileSync(logFile, `Endpoint: ${endpoint}\n`);
+    fs.appendFileSync(logFile, `ProjectId: ${projectId}\n`);
+    fs.appendFileSync(logFile, `TextLength: ${text.length}\n`);
+    fs.appendFileSync(logFile, `RequestBody: ${JSON.stringify(requestBody, null, 2)}\n\n`);
 
     // 转发请求到扣子 API
     const response = await fetch(endpoint, {
@@ -78,6 +90,9 @@ export default async function handler(request) {
     // 检查响应
     if (!response.ok) {
       const errorText = await response.text();
+      fs.appendFileSync(logFile, `=== ERROR ===\n`);
+      fs.appendFileSync(logFile, `Status: ${response.status}\n`);
+      fs.appendFileSync(logFile, `Error: ${errorText}\n\n`);
       return new Response(JSON.stringify({ error: `HTTP ${response.status}: ${errorText}` }), {
         status: response.status,
         headers: {
@@ -86,6 +101,9 @@ export default async function handler(request) {
         },
       });
     }
+    
+    fs.appendFileSync(logFile, `=== SUCCESS ===\n`);
+    fs.appendFileSync(logFile, `Status: ${response.status}\n\n`);
 
     // 流式返回响应
     return new Response(response.body, {

@@ -1,11 +1,7 @@
-/**
- * Vercel Serverless Function - 代理扣子 API 请求
- * 解决前端 CORS 问题
- */
+// Vercel Serverless Function - 代理扣子 API 请求
+// 解决前端 CORS 问题
 
-import type { VercelRequest, VercelResponse } from '@vercel/node'
-
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+module.exports = async (req, res) => {
   // 设置 CORS 头
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
@@ -59,9 +55,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!response.ok) {
       const errorText = await response.text()
       console.error('Coze API error:', response.status, errorText)
-      return res.status(response.status).json({ 
-        error: 'Coze API request failed', 
-        details: errorText 
+      return res.status(response.status).json({
+        error: 'Coze API request failed',
+        details: errorText
       })
     }
 
@@ -85,11 +81,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     res.end()
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Proxy error:', error)
-    return res.status(500).json({ 
-      error: 'Internal server error', 
-      message: error.message 
+    return res.status(500).json({
+      error: 'Internal server error',
+      message: error.message
     })
   }
 }

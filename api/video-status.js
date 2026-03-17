@@ -1,13 +1,9 @@
-/**
- * Vercel API Route - 视频状态查询代理
- */
-
-import type { VercelRequest, VercelResponse } from '@vercel/node'
+// Vercel API Route - 视频状态查询代理
 
 const API_KEY = 'C3GxBl02Wh5nlP6ypAQN'
 const ENDPOINT = 'https://genaiapi.cloudsway.net/v1/ai/kvWjKjkVWRnDbOFw'
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+module.exports = async (req, res) => {
   // 设置 CORS 头
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
@@ -25,7 +21,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const { videoId } = req.query
 
-    if (!videoId || typeof videoId !== 'string') {
+    if (!videoId) {
       return res.status(400).json({ error: 'Missing required parameter: videoId' })
     }
 
@@ -40,20 +36,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!response.ok) {
       const errorText = await response.text()
       console.error('Cloudsway API error:', response.status, errorText)
-      return res.status(response.status).json({ 
-        error: 'Status query failed', 
-        details: errorText 
+      return res.status(response.status).json({
+        error: 'Status query failed',
+        details: errorText
       })
     }
 
     const data = await response.json()
     return res.status(200).json(data)
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Proxy error:', error)
-    return res.status(500).json({ 
-      error: 'Internal server error', 
-      message: error.message 
+    return res.status(500).json({
+      error: 'Internal server error',
+      message: error.message
     })
   }
 }

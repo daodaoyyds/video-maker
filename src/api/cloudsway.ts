@@ -131,8 +131,8 @@ export function aspectRatioToSize(ratio: string): string {
 }
 
 /**
- * 将秒数限制在 API 支持的范围内 (4-12秒)
+ * 将秒数限制在 API 支持的范围内 (15-25秒)
  */
 export function clampDuration(duration: number): number {
-  return Math.min(Math.max(duration, 4), 12)
+  return Math.min(Math.max(duration, 15), 25)
 }

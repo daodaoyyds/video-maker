@@ -4,7 +4,7 @@
 const API_KEY = 'C3GxBl02Wh5nlP6ypAQN'
 const ENDPOINT = 'https://genaiapi.cloudsway.net/v1/ai/kvWjKjkVWRnDbOFw'
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
   // 设置 CORS 头
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')

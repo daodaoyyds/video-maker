@@ -1,7 +1,7 @@
 // Vercel Serverless Function - 代理扣子 API 请求
 // 解决前端 CORS 问题
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
   // 设置 CORS 头
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')

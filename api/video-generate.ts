@@ -1,6 +1,7 @@
 /**
  * Vercel API Route - 视频生成代理
  * 解决 Cloudsway API 的 CORS 问题
+ * Cloudsway 使用 multipart/form-data 格式
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node'
@@ -30,8 +31,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Missing required fields: prompt, size, seconds' })
     }
 
-    // 调用 Cloudsway API
-    const formData = new FormData()
+    // 使用 FormData 格式调用 Cloudsway API
+    const formData = new URLSearchParams()
     formData.append('prompt', prompt)
     formData.append('size', size)
     formData.append('seconds', seconds)
@@ -40,8 +41,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${API_KEY}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: formData,
+      body: formData.toString(),
     })
 
     if (!response.ok) {

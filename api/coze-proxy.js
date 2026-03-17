@@ -31,23 +31,23 @@ export default async (req, res) => {
       return
     }
 
-    // 构建请求体
+    // 构建请求体（扣子标准格式）
     const requestBody = {
       content: {
         query: {
           prompt: [
             {
-              role: 'user',
-              type: 'query',
-              content: text,
-              content_type: 'text'
+              type: 'text',
+              content: {
+                text: text
+              }
             }
           ]
-        },
-        bot_id: projectId,
-        conversation_id: sessionId,
-        user: 'user'
-      }
+        }
+      },
+      type: 'query',
+      session_id: sessionId,
+      project_id: projectId
     }
 
     // 调用扣子 API

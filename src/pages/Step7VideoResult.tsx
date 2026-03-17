@@ -6,9 +6,8 @@ import {
   generateVideo, 
   waitForVideoCompletion, 
   getVideoDownloadUrl,
-  aspectRatioToSize,
-  clampDuration,
 } from '../api/cloudsway'
+import { aspectRatioToSize, clampDuration } from '../config/videoProviders'
 
 interface Step7Props {
   onNext: () => void

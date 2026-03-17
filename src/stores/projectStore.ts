@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { defaultDuration, defaultAspectRatio } from '../config/videoProviders'
 
 export interface ProjectData {
   // Step 1: 基础信息
@@ -115,8 +116,8 @@ interface ProjectStore extends ProjectData {
 const initialState: ProjectData = {
   productName: '',
   productImage: null,
-  videoDuration: 15,
-  aspectRatio: '9:16',
+  videoDuration: defaultDuration,
+  aspectRatio: defaultAspectRatio,
   productInfo: null,
   selectedTA: null,
   sceneScale: '日常',

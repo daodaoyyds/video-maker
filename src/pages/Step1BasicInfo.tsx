@@ -3,23 +3,12 @@ import { Form, Input, Upload, Radio, Button, Space, message } from 'antd'
 import { UploadOutlined, ArrowRightOutlined } from '@ant-design/icons'
 import type { UploadProps } from 'antd'
 import { useProjectStore } from '../stores/projectStore'
+import { durationOptions, aspectRatioOptions } from '../config/videoProviders'
 
 interface Step1Props {
   onNext: () => void
   onPrev: () => void
 }
-
-const durationOptions = [
-  { label: '15秒', value: 15 },
-  { label: '25秒', value: 25 },
-  { label: '25秒', value: 25 },
-]
-
-const aspectRatioOptions = [
-  { label: '9:16 竖屏', value: '9:16' },
-  { label: '16:9 横屏', value: '16:9' },
-  { label: '1:1 方形', value: '1:1' },
-]
 
 export default function Step1BasicInfo({ onNext }: Step1Props) {
   const [form] = Form.useForm()

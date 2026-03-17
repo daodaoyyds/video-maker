@@ -112,27 +112,4 @@ export async function waitForVideoCompletion(
   throw new Error('等待超时，请稍后手动查询')
 }
 
-/**
- * 将比例转换为尺寸
- * 9:16 -> 720x1280
- * 1:1 -> 1024x1024
- * 16:9 -> 1280x720
- */
-export function aspectRatioToSize(ratio: string): string {
-  switch (ratio) {
-    case '9:16':
-      return '720x1280'
-    case '1:1':
-      return '1024x1024'
-    case '16:9':
-    default:
-      return '1280x720'
-  }
-}
-
-/**
- * 将秒数限制在 API 支持的范围内 (15-25秒)
- */
-export function clampDuration(duration: number): number {
-  return Math.min(Math.max(duration, 15), 25)
-}
+// 注意：aspectRatioToSize 和 clampDuration 现在从 config/videoProviders 导入

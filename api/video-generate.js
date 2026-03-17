@@ -12,18 +12,26 @@ export default async (req, res) => {
 
   // 处理预检请求
   if (req.method === 'OPTIONS') {
-    return res.status(200).end()
+    res.statusCode = 200
+    res.end()
+    return
   }
 
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' })
+    res.statusCode = 405
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify({ error: 'Method not allowed' }))
+    return
   }
 
   try {
     const { prompt, size, seconds } = req.body
 
     if (!prompt || !size || !seconds) {
-      return res.status(400).json({ error: 'Missing required fields: prompt, size, seconds' })
+      res.statusCode = 400
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify({ error: 'Missing required fields: prompt, size, seconds' }))
+      return
     }
 
     // 使用 FormData 格式调用 Cloudsway API
@@ -44,20 +52,27 @@ export default async (req, res) => {
     if (!response.ok) {
       const errorText = await response.text()
       console.error('Cloudsway API error:', response.status, errorText)
-      return res.status(response.status).json({
+      res.statusCode = response.status
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify({
         error: 'Video generation failed',
         details: errorText
-      })
+      }))
+      return
     }
 
     const data = await response.json()
-    return res.status(200).json(data)
+    res.statusCode = 200
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify(data))
 
   } catch (error) {
     console.error('Proxy error:', error)
-    return res.status(500).json({
+    res.statusCode = 500
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify({
       error: 'Internal server error',
       message: error.message
-    })
+    }))
   }
 }

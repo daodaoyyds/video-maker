@@ -11,18 +11,26 @@ export default async (req, res) => {
 
   // 处理预检请求
   if (req.method === 'OPTIONS') {
-    return res.status(200).end()
+    res.statusCode = 200
+    res.end()
+    return
   }
 
   if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' })
+    res.statusCode = 405
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify({ error: 'Method not allowed' }))
+    return
   }
 
   try {
     const { videoId } = req.query
 
     if (!videoId) {
-      return res.status(400).json({ error: 'Missing required parameter: videoId' })
+      res.statusCode = 400
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify({ error: 'Missing required parameter: videoId' }))
+      return
     }
 
     // 调用 Cloudsway API
@@ -36,25 +44,31 @@ export default async (req, res) => {
     if (!response.ok) {
       const errorText = await response.text()
       console.error('Cloudsway API error:', response.status, errorText)
-      return res.status(response.status).json({
+      res.statusCode = response.status
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify({
         error: 'Download failed',
         details: errorText
-      })
+      }))
+      return
     }
 
     // 获取视频流并转发
     const contentType = response.headers.get('content-type') || 'video/mp4'
     const buffer = await response.arrayBuffer()
 
+    res.statusCode = 200
     res.setHeader('Content-Type', contentType)
     res.setHeader('Content-Disposition', `attachment; filename="video_${videoId}.mp4"`)
-    return res.send(Buffer.from(buffer))
+    res.end(Buffer.from(buffer))
 
   } catch (error) {
     console.error('Proxy error:', error)
-    return res.status(500).json({
+    res.statusCode = 500
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify({
       error: 'Internal server error',
       message: error.message
-    })
+    }))
   }
 }

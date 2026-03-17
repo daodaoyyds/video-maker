@@ -9,18 +9,26 @@ export default async (req, res) => {
 
   // 处理预检请求
   if (req.method === 'OPTIONS') {
-    return res.status(200).end()
+    res.statusCode = 200
+    res.end()
+    return
   }
 
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' })
+    res.statusCode = 405
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify({ error: 'Method not allowed' }))
+    return
   }
 
   try {
     const { endpoint, token, projectId, sessionId, text } = req.body
 
     if (!endpoint || !token) {
-      return res.status(400).json({ error: 'Missing endpoint or token' })
+      res.statusCode = 400
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify({ error: 'Missing endpoint or token' }))
+      return
     }
 
     // 构建请求体
@@ -55,16 +63,22 @@ export default async (req, res) => {
     if (!response.ok) {
       const errorText = await response.text()
       console.error('Coze API error:', response.status, errorText)
-      return res.status(response.status).json({
+      res.statusCode = response.status
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify({
         error: 'Coze API request failed',
         details: errorText
-      })
+      }))
+      return
     }
 
     // 流式返回响应
     const reader = response.body?.getReader()
     if (!reader) {
-      return res.status(500).json({ error: 'No response body' })
+      res.statusCode = 500
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify({ error: 'No response body' }))
+      return
     }
 
     // 设置响应头
@@ -83,9 +97,11 @@ export default async (req, res) => {
 
   } catch (error) {
     console.error('Proxy error:', error)
-    return res.status(500).json({
+    res.statusCode = 500
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify({
       error: 'Internal server error',
       message: error.message
-    })
+    }))
   }
 }

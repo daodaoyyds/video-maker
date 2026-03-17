@@ -1,15 +1,5 @@
 {
-  "buildCommand": "npm run build && cd api && npx tsc *.ts --outDir . --module commonjs --target es2020 --esModuleInterop --skipLibCheck && cd .. && cp -r api dist/",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "framework": "vite",
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1.js"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
+  "framework": "vite"
 }

@@ -151,6 +151,14 @@ export default function Step2ProductResearch({ onNext, onPrev }: Step2Props) {
         setProgress(100)
         setLoadingText('TA画像分析完成！')
         message.success('产品调研完成！')
+      } else if (taResult.success && taResult.data.length === 0) {
+        // TA画像返回空数组，使用模拟数据
+        console.log('TA画像返回空数组，使用模拟数据')
+        const mockData = getMockTAProfiles()
+        setTaProfiles(mockData)
+        setProgress(100)
+        setLoadingText('TA画像分析完成（使用示例数据）！')
+        message.success('产品调研完成！')
       } else {
         message.error('TA画像调研失败，请检查API配置')
       }
